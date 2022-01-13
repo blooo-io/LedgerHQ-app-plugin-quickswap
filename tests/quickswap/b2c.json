@@ -8,7 +8,7 @@
                 "0x38ed1739": {
                     "erc20OfInterest": [
                         "path.0",
-                        "path.1"
+                        "path.-1"
                     ],
                     "method": "swapExactTokensForTokens",
                     "plugin": "QuickSwap"
@@ -16,7 +16,7 @@
                 "0x18cbafe5": {
                     "erc20OfInterest": [
                         "path.0",
-                        "path.1"
+                        "path.-1"
                     ],
                     "method": "swapExactTokensForETH",
                     "plugin": "QuickSwap"
