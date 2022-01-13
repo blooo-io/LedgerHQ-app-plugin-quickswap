@@ -9,7 +9,7 @@
 
 #define RUN_APPLICATION 1
 
-#define NUM_QUICKSWAP_SELECTORS 1
+#define NUM_QUICKSWAP_SELECTORS 2
 #define SELECTOR_SIZE           4
 
 #define PLUGIN_NAME "QuickSwap"
@@ -27,7 +27,7 @@ extern const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH];
 // etc.. are 0xeeeee...).
 #define ADDRESS_IS_NETWORK_TOKEN(_addr) (!memcmp(_addr, QUICKSWAP_ETH_ADDRESS, ADDRESS_LENGTH))
 
-typedef enum { SWAP_EXACT_TOKENS_FOR_TOKENS } quickswapSelector_t;
+typedef enum { SWAP_EXACT_TOKENS_FOR_TOKENS, SWAP_EXACT_TOKENS_FOR_ETH } quickswapSelector_t;
 
 extern const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS];
 

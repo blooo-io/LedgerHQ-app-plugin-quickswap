@@ -53,8 +53,8 @@ static void handle_token_received(const ethPluginProvideParameter_t *msg,
     PRINTF("TOKEN RECEIVED: %.*H\n", ADDRESS_LENGTH, context->contract_address_received);
 }
 
-static void handle_swap_exact_tokens_for_tokens(ethPluginProvideParameter_t *msg,
-                                                quickswap_parameters_t *context) {
+static void handle_swap_exact_tokens(ethPluginProvideParameter_t *msg,
+                                     quickswap_parameters_t *context) {
     switch (context->next_param) {
         case AMOUNT_SENT:  // amountIn
             handle_amount_sent(msg, context);
@@ -79,6 +79,10 @@ static void handle_swap_exact_tokens_for_tokens(ethPluginProvideParameter_t *msg
             break;
         case TOKEN_RECEIVED:  // path[len(path) - 1]
             handle_token_received(msg, context);
+            context->next_param = BENEFICIARY;
+            break;
+        case BENEFICIARY:  // to
+            handle_beneficiary(msg, context);
             context->next_param = NONE;
             break;
         case NONE:
@@ -110,7 +114,8 @@ void handle_provide_parameter(void *parameters) {
         context->offset = 0;  // Reset offset
         switch (context->selectorIndex) {
             case SWAP_EXACT_TOKENS_FOR_TOKENS:
-                handle_swap_exact_tokens_for_tokens(msg, context);
+            case SWAP_EXACT_TOKENS_FOR_ETH:
+                handle_swap_exact_tokens(msg, context);
                 break;
             default:
                 PRINTF("Selector Index %d not supported\n", context->selectorIndex);

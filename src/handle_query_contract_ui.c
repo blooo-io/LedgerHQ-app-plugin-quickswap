@@ -4,6 +4,7 @@
 static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     switch (context->selectorIndex) {
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_ETH:
             strlcpy(msg->title, "Send", msg->titleLength);
             break;
         default:
@@ -27,6 +28,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
 static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     switch (context->selectorIndex) {
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_ETH:
             strlcpy(msg->title, "Receive Min", msg->titleLength);
             break;
         default:
@@ -101,7 +103,6 @@ static screens_t get_screen(const ethQueryContractUI_t *msg,
                 return SEND_SCREEN;
             }
             break;
-
         case 2:
             if (both_tokens_found) {
                 return BENEFICIARY_SCREEN;

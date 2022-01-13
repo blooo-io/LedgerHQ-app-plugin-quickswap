@@ -8,6 +8,7 @@ void handle_query_contract_id(void *parameters) {
 
     switch (context->selectorIndex) {
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_ETH:
             strlcpy(msg->version, "Swap", msg->versionLength);
             break;
         default:
