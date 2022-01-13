@@ -1,4 +1,4 @@
-#include "paraswap_plugin.h"
+#include "quickswap_plugin.h"
 
 // Called once to init.
 void handle_init_contract(void *parameters) {
@@ -12,20 +12,20 @@ void handle_init_contract(void *parameters) {
         return;
     }
 
-    if (msg->pluginContextLength < sizeof(paraswap_parameters_t)) {
-        PRINTF("Paraswap context size too big: expected %d got %d\n",
-               sizeof(paraswap_parameters_t),
+    if (msg->pluginContextLength < sizeof(quickswap_parameters_t)) {
+        PRINTF("QuickSwap context size too big: expected %d got %d\n",
+               sizeof(quickswap_parameters_t),
                msg->pluginContextLength);
         msg->result = ETH_PLUGIN_RESULT_ERROR;
         return;
     }
 
-    paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
+    quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
     memset(context, 0, sizeof(*context));
     context->valid = 1;
 
-    for (uint8_t i = 0; i < NUM_PARASWAP_SELECTORS; i++) {
-        if (memcmp((uint8_t *) PIC(PARASWAP_SELECTORS[i]), msg->selector, SELECTOR_SIZE) == 0) {
+    for (uint8_t i = 0; i < NUM_QUICKSWAP_SELECTORS; i++) {
+        if (memcmp((uint8_t *) PIC(QUICKSWAP_SELECTORS[i]), msg->selector, SELECTOR_SIZE) == 0) {
             context->selectorIndex = i;
             break;
         }
@@ -33,38 +33,8 @@ void handle_init_contract(void *parameters) {
 
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
-        case BUY_ON_UNI_FORK:
-        case SWAP_ON_UNI_FORK:
-        case BUY_ON_UNI:
-        case SWAP_ON_UNI:
-        case SWAP_ON_UNI_V4:
-        case SWAP_ON_UNI_FORK_V4:
-        case BUY_ON_UNI_V4:
-        case BUY_ON_UNI_FORK_V4:
-            if (context->selectorIndex == SWAP_ON_UNI_FORK ||
-                context->selectorIndex == BUY_ON_UNI_FORK ||
-                context->selectorIndex == SWAP_ON_UNI_FORK_V4 ||
-                context->selectorIndex == BUY_ON_UNI_FORK_V4) {
-                context->skip =
-                    2;  // Skip the first two parameters (factory and initCode) for uni forks.
-            }
+        case SWAP_EXACT_TOKENS_FOR_TOKENS:
             context->next_param = AMOUNT_SENT;
-            break;
-        case SWAP_ON_ZERO_V4:
-        case SWAP_ON_ZERO_V2:
-            context->next_param = TOKEN_SENT;
-            break;
-        case MEGA_SWAP:
-        case BUY:
-        case MULTI_SWAP:
-        case SIMPLE_BUY:
-        case SIMPLE_SWAP:
-        case SIMPLE_SWAP_V4:
-        case MULTI_SWAP_V4:
-        case MEGA_SWAP_V4:
-            context->next_param = TOKEN_SENT;
-            if (context->selectorIndex != SIMPLE_SWAP_V4)
-                context->skip = 1;  // Skipping 0x20 (offset of structure)
             break;
         default:
             PRINTF("Missing selectorIndex\n");

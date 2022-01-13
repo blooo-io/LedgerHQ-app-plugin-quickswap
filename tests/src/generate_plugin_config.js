@@ -2,7 +2,7 @@
 // You will also need to create a `b2c.json` file that will hold the methodIDs and location of
 // the erc20 tokens that should get displayed.
 // EDIT THIS: replace with the name of your plugin (lowercase)
-const pluginFolder = "paraswap";
+const pluginFolder = "quickswap";
 
 function serialize_data(pluginName, contractAddress, selector) {
 	const len = Buffer.from([pluginName.length]);
@@ -21,10 +21,10 @@ function assert(condition, message) {
 
 // Function to generate the plugin configuration.
 function generate_plugin_config() {
-	
+
 	var fs = require('fs');
 	var files = fs.readdirSync(`${pluginFolder}/abis/`);
-	
+
 	// `contracts_to_abis` holds a maping of contract addresses to abis
 	let contracts_to_abis = {};
 	for (let abiFileName of files) {
@@ -37,12 +37,12 @@ function generate_plugin_config() {
 		// Add it to contracts
 		contracts_to_abis[contractAddress] = abi;
 	}
-	
+
 	// Load the b2c.json file
 	const b2c = require(`../${pluginFolder}/b2c.json`);
-	
+
 	let res = {};
-	
+
 	// Place holder signature
 	const PLACE_HOLDER_SIGNATURE = "3045022100f6e1a922c745e244fa3ed9a865491672808ef93f492ee0410861d748c5de201f0220160d6522499f3a84fa3e744b3b81e49e129e997b28495e58671a1169b16fa777";
 
@@ -66,7 +66,7 @@ function generate_plugin_config() {
 
 
 			// Put them in `methods_info`
-			methods_info[selector] = {"erc20OfInterest": values["erc20OfInterest"], "plugin": pluginName, "serialized_data": serializedData, "signature": signature};
+			methods_info[selector] = { "erc20OfInterest": values["erc20OfInterest"], "plugin": pluginName, "serialized_data": serializedData, "signature": signature };
 		}
 		// Add the abi to methods_info
 		methods_info["abi"] = contracts_to_abis[contractAddress];
