@@ -1,12 +1,13 @@
-#include "paraswap_plugin.h"
+#include "quickswap_plugin.h"
 
 void handle_finalize(void *parameters) {
     ethPluginFinalize_t *msg = (ethPluginFinalize_t *) parameters;
-    paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
+    quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
+    print_bytes(msg->pluginSharedRO->txContent->destination,
+                sizeof(msg->pluginSharedRO->txContent->destination));
     if (context->valid) {
         msg->numScreens = 2;
-        if ((context->selectorIndex == SIMPLE_SWAP || context->selectorIndex == SIMPLE_BUY ||
-             context->selectorIndex == SIMPLE_SWAP_V4) &&
+        if ((context->selectorIndex == SWAP_EXACT_TOKENS_FOR_TOKENS) &&
             (strncmp(context->beneficiary,
                      (const unsigned char *) NULL_ETH_ADDRESS,
                      ADDRESS_LENGTH) != 0)) {
@@ -17,6 +18,7 @@ void handle_finalize(void *parameters) {
             // Address is not network token (0xeee...) so we will need to look up the token in the
             // CAL.
             msg->tokenLookup1 = context->contract_address_sent;
+            print_bytes(context->contract_address_sent, sizeof(context->contract_address_sent));
             PRINTF("Setting address sent to: %.*H\n",
                    ADDRESS_LENGTH,
                    context->contract_address_sent);
@@ -39,6 +41,8 @@ void handle_finalize(void *parameters) {
                    ADDRESS_LENGTH,
                    context->contract_address_received);
             msg->tokenLookup2 = context->contract_address_received;
+            print_bytes(context->contract_address_received,
+                        sizeof(context->contract_address_received));
         } else {
             msg->tokenLookup2 = NULL;
         }

@@ -29,13 +29,13 @@ APPVERSION_N     = 1
 APPVERSION_P     = 2
 APPVERSION       = $(APPVERSION_M).$(APPVERSION_N).$(APPVERSION_P)
 
-APPNAME = "Paraswap"
+APPNAME = "QuickSwap"
 
 #prepare hsm generation
 ifeq ($(TARGET_NAME), TARGET_NANOX)
-ICONNAME=icons/nanox_app_paraswap.gif
+ICONNAME=icons/nanox_app_quickswap.gif
 else
-ICONNAME=icons/nanos_app_paraswap.gif
+ICONNAME=icons/nanos_app_quickswap.gif
 endif
 
 ################
@@ -156,4 +156,4 @@ include $(BOLOS_SDK)/Makefile.rules
 dep/%.d: %.c Makefile
 
 listvariants:
-	@echo VARIANTS NONE paraswap 
+	@echo VARIANTS NONE quickswap

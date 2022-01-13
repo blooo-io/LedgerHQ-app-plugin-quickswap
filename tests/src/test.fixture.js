@@ -19,13 +19,13 @@ const Resolve = require("path").resolve;
 const NANOS_ETH_PATH = Resolve("elfs/ethereum_nanos.elf");
 const NANOX_ETH_PATH = Resolve("elfs/ethereum_nanox.elf");
 
-const NANOS_PLUGIN_PATH = Resolve("elfs/paraswap_nanos.elf");
-const NANOX_PLUGIN_PATH = Resolve("elfs/paraswap_nanox.elf");
+const NANOS_PLUGIN_PATH = Resolve("elfs/quickswap_nanos.elf");
+const NANOX_PLUGIN_PATH = Resolve("elfs/quickswap_nanox.elf");
 
-const NANOS_PLUGIN = { Paraswap: NANOS_PLUGIN_PATH };
-const NANOX_PLUGIN = { Paraswap: NANOX_PLUGIN_PATH };
+const NANOS_PLUGIN = { QuickSwap: NANOS_PLUGIN_PATH };
+const NANOX_PLUGIN = { QuickSwap: NANOX_PLUGIN_PATH };
 
-const paraswapJSON = generate_plugin_config();
+const quickswapJSON = generate_plugin_config();
 
 const SPECULOS_ADDRESS = "0xFE984369CE3919AA7BB4F431082D027B4F8ED70C";
 const RANDOM_ADDRESS = "0xaaaabbbbccccddddeeeeffffgggghhhhiiiijjjj";
@@ -106,10 +106,10 @@ function zemu(device, func, signed = false) {
       const transport = await sim.getTransport();
       const eth = new Eth(transport);
 
-      if(!signed){
+      if (!signed) {
         eth.setPluginsLoadConfig({
           baseURL: null,
-          extraPlugins: paraswapJSON,
+          extraPlugins: quickswapJSON,
         });
       }
       await func(sim, eth);
@@ -127,15 +127,15 @@ function zemu(device, func, signed = false) {
  * @param {string} label directory against which the test snapshots must be checked.
  * @param {string} rawTxHex RawTransaction Hex to process
  */
-async function processTransaction(eth, sim, steps, label, rawTxHex,srlTx="") {
-  
+async function processTransaction(eth, sim, steps, label, rawTxHex, srlTx = "") {
+
   let serializedTx;
 
-  if(srlTx == "")
+  if (srlTx == "")
     serializedTx = txFromEtherscan(rawTxHex);
-  else 
+  else
     serializedTx = srlTx;
-  
+
   let tx = eth.signTransaction("44'/60'/0'/0/0", serializedTx);
 
   await sim.waitUntilScreenIsNot(
@@ -156,7 +156,7 @@ async function processTransaction(eth, sim, steps, label, rawTxHex,srlTx="") {
  * @param {string} rawTxHex RawTx Hex to test
  * @param {boolean} signed The plugin is already signed and existing in Ledger database
  */
-function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, signed, serializedTx, testNetwork ) {
+function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, signed, serializedTx, testNetwork) {
   test(
     "[" + contractName + "] - " + device.label + " - " + testLabel,
     zemu(device.name, async (sim, eth) => {
@@ -164,16 +164,16 @@ function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, s
         eth,
         sim,
         device.steps,
-        testNetwork+ "_" + device.name + "_" + testDirSuffix,
+        testNetwork + "_" + device.name + "_" + testDirSuffix,
         rawTxHex,
         serializedTx
       );
-    },signed)
+    }, signed)
   );
 }
 
 
-function populateTransaction(contractAddr, inputData, chainId, value="0.1"){
+function populateTransaction(contractAddr, inputData, chainId, value = "0.1") {
   // Get the generic transaction template
   let unsignedTx = genericTx;
   //adapt to the appropriate network

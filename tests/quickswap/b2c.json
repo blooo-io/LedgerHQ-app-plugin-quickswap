@@ -1,0 +1,20 @@
+{
+    "chainId": 137,
+    "contracts": [
+        {
+            "address": "0xa5e0829caced8ffdd4de3c43696c57f7d7a678ff",
+            "contractName": "UniswapV2Router02",
+            "selectors": {
+                "0x18cbafe5": {
+                    "erc20OfInterest": [
+                        "path.0",
+                        "path.1"
+                    ],
+                    "method": "swapExactTokensForTokens",
+                    "plugin": "QuickSwap"
+                }
+            }
+        }
+    ],
+    "name": "QuickSwap"
+}

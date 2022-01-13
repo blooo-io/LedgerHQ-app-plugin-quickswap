@@ -1,29 +1,10 @@
-#include "paraswap_plugin.h"
+#include "quickswap_plugin.h"
 
 // Set UI for the "Send" screen.
-static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
+static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     switch (context->selectorIndex) {
-        case SWAP_ON_UNI_FORK:
-        case SWAP_ON_UNI:
-        case SIMPLE_SWAP:
-        case SIMPLE_SWAP_V4:
-        case MEGA_SWAP:
-        case MULTI_SWAP:
-        case SWAP_ON_ZERO_V4:
-        case SWAP_ON_ZERO_V2:
-        case SWAP_ON_UNI_V4:
-        case SWAP_ON_UNI_FORK_V4:
-        case MULTI_SWAP_V4:
-        case MEGA_SWAP_V4:
+        case SWAP_EXACT_TOKENS_FOR_TOKENS:
             strlcpy(msg->title, "Send", msg->titleLength);
-            break;
-        case BUY_ON_UNI_FORK:
-        case BUY_ON_UNI:
-        case BUY:
-        case SIMPLE_BUY:
-        case BUY_ON_UNI_V4:
-        case BUY_ON_UNI_FORK_V4:
-            strlcpy(msg->title, "Send Max", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -43,29 +24,10 @@ static void set_send_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *contex
                    msg->msgLength);
 }
 // Set UI for "Receive" screen.
-static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
+static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     switch (context->selectorIndex) {
-        case SWAP_ON_UNI_FORK:
-        case SWAP_ON_UNI:
-        case SIMPLE_SWAP:
-        case SIMPLE_SWAP_V4:
-        case MEGA_SWAP:
-        case MULTI_SWAP:
-        case SWAP_ON_ZERO_V4:
-        case SWAP_ON_ZERO_V2:
-        case SWAP_ON_UNI_V4:
-        case SWAP_ON_UNI_FORK_V4:
-        case MULTI_SWAP_V4:
-        case MEGA_SWAP_V4:
+        case SWAP_EXACT_TOKENS_FOR_TOKENS:
             strlcpy(msg->title, "Receive Min", msg->titleLength);
-            break;
-        case BUY_ON_UNI_FORK:
-        case BUY_ON_UNI:
-        case BUY:
-        case SIMPLE_BUY:
-        case BUY_ON_UNI_V4:
-        case BUY_ON_UNI_FORK_V4:
-            strlcpy(msg->title, "Receive", msg->titleLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -86,7 +48,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *con
 }
 
 // Set UI for "Beneficiary" screen.
-static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t *context) {
+static void set_beneficiary_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     strlcpy(msg->title, "Beneficiary", msg->titleLength);
 
     msg->msg[0] = '0';
@@ -100,13 +62,14 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, paraswap_parameters_t 
 
 // Set UI for "Warning" screen.
 static void set_warning_ui(ethQueryContractUI_t *msg,
-                           const paraswap_parameters_t *context __attribute__((unused))) {
+                           const quickswap_parameters_t *context __attribute__((unused))) {
     strlcpy(msg->title, "WARNING", msg->titleLength);
     strlcpy(msg->msg, "Unknown token", msg->msgLength);
 }
 
 // Helper function that returns the enum corresponding to the screen that should be displayed.
-static screens_t get_screen(const ethQueryContractUI_t *msg, const paraswap_parameters_t *context) {
+static screens_t get_screen(const ethQueryContractUI_t *msg,
+                            const quickswap_parameters_t *context) {
     uint8_t index = msg->screenIndex;
 
     bool token_sent_found = context->tokens_found & TOKEN_SENT_FOUND;
@@ -172,7 +135,7 @@ static screens_t get_screen(const ethQueryContractUI_t *msg, const paraswap_para
 
 void handle_query_contract_ui(void *parameters) {
     ethQueryContractUI_t *msg = (ethQueryContractUI_t *) parameters;
-    paraswap_parameters_t *context = (paraswap_parameters_t *) msg->pluginContext;
+    quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
 
     memset(msg->title, 0, msg->titleLength);
     memset(msg->msg, 0, msg->msgLength);
