@@ -38,10 +38,16 @@ static const uint8_t SWAP_EXACT_TOKENS_FOR_TOKENS_SELECTOR[SELECTOR_SIZE] = {0x3
 // MethodID: 0x18cbafe5
 static const uint8_t SWAP_EXACT_TOKENS_FOR_ETH_SELECTOR[SELECTOR_SIZE] = {0x18, 0xcb, 0xaf, 0xe5};
 
+// Function: swapExactETHForTokens(uint256 amountOutMin, address[] path, address to, uint256
+// deadline)
+// MethodID : 0x7ff36ab5
+static const uint8_t SWAP_EXACT_ETH_FOR_TOKENS_SELECTOR[SELECTOR_SIZE] = {0x7f, 0xf3, 0x6a, 0xb5};
+
 // Array of all the different quickswap selectors.
 const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     SWAP_EXACT_TOKENS_FOR_TOKENS_SELECTOR,
-    SWAP_EXACT_TOKENS_FOR_ETH_SELECTOR};
+    SWAP_EXACT_TOKENS_FOR_ETH_SELECTOR,
+    SWAP_EXACT_ETH_FOR_TOKENS_SELECTOR};
 
 // QuickSwap uses `0xeeeee` as a dummy address to represent ETH.
 const uint8_t QUICKSWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,

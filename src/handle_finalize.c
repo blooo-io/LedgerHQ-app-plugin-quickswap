@@ -3,8 +3,7 @@
 void handle_finalize(void *parameters) {
     ethPluginFinalize_t *msg = (ethPluginFinalize_t *) parameters;
     quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
-    print_bytes(msg->pluginSharedRO->txContent->destination,
-                sizeof(msg->pluginSharedRO->txContent->destination));
+
     if (context->valid) {
         msg->numScreens = 2;
         if ((context->selectorIndex == SWAP_EXACT_TOKENS_FOR_TOKENS) &&

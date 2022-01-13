@@ -16,18 +16,18 @@ const inputData = "0x38ed1739000000000000000000000000000000000000000000000008021
 const serializedTx = populateTransaction(contractAddr, inputData, chainID);
 
 const devices = [
-  {
-    name: "nanos",
-    label: "Nano S",
-    steps: 10, // <= Define the number of steps for this test case and this device
-  },
-  // {
-  //   name: "nanox",
-  //   label: "Nano X",
-  //   steps: 5, // <= Define the number of steps for this test case and this device
-  // },
+    {
+        name: "nanos",
+        label: "Nano S",
+        steps: 10, // <= Define the number of steps for this test case and this device
+    },
+    // {
+    //   name: "nanox",
+    //   label: "Nano X",
+    //   steps: 5, // <= Define the number of steps for this test case and this device
+    // },
 ];
 
 devices.forEach((device) =>
-  processTest(device, contractName, testLabel, testDirSuffix, "", signedPlugin, serializedTx, testNetwork)
+    processTest(device, contractName, testLabel, testDirSuffix, "", signedPlugin, serializedTx, testNetwork)
 );

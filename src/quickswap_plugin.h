@@ -9,7 +9,7 @@
 
 #define RUN_APPLICATION 1
 
-#define NUM_QUICKSWAP_SELECTORS 2
+#define NUM_QUICKSWAP_SELECTORS 3
 #define SELECTOR_SIZE           4
 
 #define PLUGIN_NAME "QuickSwap"
@@ -27,7 +27,11 @@ extern const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH];
 // etc.. are 0xeeeee...).
 #define ADDRESS_IS_NETWORK_TOKEN(_addr) (!memcmp(_addr, QUICKSWAP_ETH_ADDRESS, ADDRESS_LENGTH))
 
-typedef enum { SWAP_EXACT_TOKENS_FOR_TOKENS, SWAP_EXACT_TOKENS_FOR_ETH } quickswapSelector_t;
+typedef enum {
+    SWAP_EXACT_TOKENS_FOR_TOKENS,
+    SWAP_EXACT_TOKENS_FOR_ETH,
+    SWAP_EXACT_ETH_FOR_TOKENS
+} quickswapSelector_t;
 
 extern const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS];
 
@@ -48,11 +52,14 @@ typedef enum {
 #define PATH \
     4  // Path of the different asseths that will get swapped during the trade. First and last
        // tokens are the ones we care about.
-#define BENEFICIARY  5  // Address to which the contract will send the tokens.
-#define OFFSET       6
-#define PATHS_OFFSET 7
-#define PATHS_LEN    8
-#define NONE         13
+#define BENEFICIARY                 5  // Address to which the contract will send the tokens.
+#define OFFSET                      6
+#define PATHS_OFFSET                7
+#define PATHS_LEN                   8
+#define TOKEN_RECEIVED_PATHS_OFFSET 9
+#define TOKEN_RECEIVED_PATH         10
+
+#define NONE 11
 // Number of decimals used when the token wasn't found in the CAL.
 #define DEFAULT_DECIMAL WEI_TO_ETHER
 
