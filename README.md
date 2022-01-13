@@ -1,6 +1,7 @@
 [![Code style check](https://github.com/blooo-io/LedgerHQ-app-plugin-quickswap/actions/workflows/lint-workflow.yml/badge.svg)](https://github.com/blooo-io/LedgerHQ-app-plugin-quickswap/actions/workflows/lint-workflow.yml)
 [![Compilation & tests](https://github.com/blooo-io/LedgerHQ-app-plugin-quickswap/actions/workflows/ci-workflow.yml/badge.svg)](https://github.com/blooo-io/LedgerHQ-app-plugin-quickswap/actions/workflows/ci-workflow.yml)
 
+
 # Ledger QuickSwap Exchange Plugin
 
 This is a plugin for the Ethereum application which helps parsing and displaying relevant information when signing a QuickSwap transaction.
