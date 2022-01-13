@@ -94,6 +94,40 @@ static void handle_swap_exact_tokens(ethPluginProvideParameter_t *msg,
     }
 }
 
+static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg,
+                                             quickswap_parameters_t *context) {
+    switch (context->next_param) {
+        case AMOUNT_RECEIVED:  // amountOut
+            context->checkpoint = msg->parameterOffset;
+            handle_amount_received(msg, context);
+            context->next_param = PATHS_OFFSET;
+            break;
+        case PATHS_OFFSET:
+            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
+            context->next_param = PATH;
+            break;
+        case PATH:  // len(path)
+            context->skip = msg->parameter[PARAMETER_LENGTH - 1] - 2;
+            context->next_param = TOKEN_SENT;
+            context->checkpoint = msg->parameterOffset + PARAMETER_LENGTH;
+            break;
+        case TOKEN_SENT:  // path[0]
+            handle_token_sent(msg, context);
+            context->next_param = TOKEN_RECEIVED;
+            break;
+        case TOKEN_RECEIVED:  // path[len(path) - 1]
+            handle_token_received(msg, context);
+            context->next_param = NONE;
+            break;
+        case NONE:
+            break;
+        default:
+            PRINTF("Param not supported\n");
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
@@ -116,6 +150,9 @@ void handle_provide_parameter(void *parameters) {
             case SWAP_EXACT_TOKENS_FOR_TOKENS:
             case SWAP_EXACT_TOKENS_FOR_ETH:
                 handle_swap_exact_tokens(msg, context);
+                break;
+            case SWAP_EXACT_ETH_FOR_TOKENS:
+                handle_swap_exact_eth_for_tokens(msg, context);
                 break;
             default:
                 PRINTF("Selector Index %d not supported\n", context->selectorIndex);

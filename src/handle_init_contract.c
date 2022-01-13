@@ -37,6 +37,9 @@ void handle_init_contract(void *parameters) {
         case SWAP_EXACT_TOKENS_FOR_ETH:
             context->next_param = AMOUNT_SENT;
             break;
+        case SWAP_EXACT_ETH_FOR_TOKENS:
+            context->next_param = AMOUNT_RECEIVED;
+            break;
         default:
             PRINTF("Missing selectorIndex\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
