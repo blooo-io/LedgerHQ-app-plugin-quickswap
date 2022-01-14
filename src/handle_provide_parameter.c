@@ -187,6 +187,7 @@ void handle_provide_parameter(void *parameters) {
         switch (context->selectorIndex) {
             case SWAP_EXACT_TOKENS_FOR_TOKENS:
             case SWAP_EXACT_TOKENS_FOR_ETH:
+            case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
                 handle_swap_exact_tokens(msg, context);
                 break;
             case SWAP_TOKENS_FOR_EXACT_TOKENS:

@@ -36,6 +36,14 @@
                     ],
                     "method": "swapTokensForExactTokens",
                     "plugin": "QuickSwap"
+                },
+                "0x5c11d795": {
+                    "erc20OfInterest": [
+                        "path.0",
+                        "path.-1"
+                    ],
+                    "method": "swapExactTokensForTokensSupportingFeeOnTransferTokens",
+                    "plugin": "QuickSwap"
                 }
             }
         }
