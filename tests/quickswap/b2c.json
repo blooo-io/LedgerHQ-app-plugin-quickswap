@@ -44,6 +44,14 @@
                     ],
                     "method": "swapExactTokensForTokensSupportingFeeOnTransferTokens",
                     "plugin": "QuickSwap"
+                },
+                "0xfb3bdb41": {
+                    "erc20OfInterest": [
+                        "path.0",
+                        "path.-1"
+                    ],
+                    "method": "swapETHForExactTokens",
+                    "plugin": "QuickSwap"
                 }
             }
         }

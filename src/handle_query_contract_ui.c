@@ -7,6 +7,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
         case SWAP_EXACT_TOKENS_FOR_ETH:
         case SWAP_EXACT_ETH_FOR_TOKENS:
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
+        case SWAP_ETH_FOR_EXACT_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             strlcpy(msg->title, "Send", msg->titleLength);
             break;
@@ -35,6 +36,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
         case SWAP_EXACT_TOKENS_FOR_ETH:
         case SWAP_EXACT_ETH_FOR_TOKENS:
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
+        case SWAP_ETH_FOR_EXACT_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             strlcpy(msg->title, "Receive Min", msg->titleLength);
             break;
