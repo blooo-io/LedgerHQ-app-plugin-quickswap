@@ -13,13 +13,13 @@ const chainID = 137;
 const inputData = "0x7ff36ab5000000000000000000000000000000000000000000000000000000001c7ec7ea00000000000000000000000000000000000000000000000000000000000000800000000000000000000000001dc122db61d53a8e088d63af743f4d4c713e8a2000000000000000000000000000000000000000000000000000000000c3c084a900000000000000000000000000000000000000000000000000000000000000020000000000000000000000000d500b1d8e8ef31e21c99d1db9a6444d3adf12700000000000000000000000002791bca1f2de4661ed88a30c99a7a9449aa84174"
 
 // Create serializedTx and remove the "0x" prefix
-const serializedTx = populateTransaction(contractAddr, inputData, chainID, "200");
+const serializedTx = populateTransaction(contractAddr, inputData, chainID);
 
 const devices = [
     {
         name: "nanos",
         label: "Nano S",
-        steps: 6, // <= Define the number of steps for this test case and this device
+        steps: 8, // <= Define the number of steps for this test case and this device
     },
     // {
     //   name: "nanox",

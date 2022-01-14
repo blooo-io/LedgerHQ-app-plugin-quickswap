@@ -3,30 +3,42 @@
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     switch (context->selectorIndex) {
+        case SWAP_EXACT_ETH_FOR_TOKENS:
+        case SWAP_ETH_FOR_EXACT_TOKENS:
+            strlcpy(msg->title, "Send", msg->titleLength);
+            uint8_t *amount = msg->pluginSharedRO->txContent->value.value;
+            uint8_t amount_size = msg->pluginSharedRO->txContent->value.length;
+            print_bytes(amount, sizeof(amount));
+            print_bytes(context->amount_sent, sizeof(context->amount_sent));
+
+            amountToString(amount,
+                           sizeof(amount_size),
+                           context->decimals_sent,
+                           context->ticker_sent,
+                           msg->msg,
+                           msg->msgLength);
+            break;
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_ETH:
-        case SWAP_EXACT_ETH_FOR_TOKENS:
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
-        case SWAP_ETH_FOR_EXACT_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             strlcpy(msg->title, "Send", msg->titleLength);
+            if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+                strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+            }
+
+            amountToString(context->amount_sent,
+                           sizeof(context->amount_sent),
+                           context->decimals_sent,
+                           context->ticker_sent,
+                           msg->msg,
+                           msg->msgLength);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }
-
-    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
-        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
-    }
-
-    amountToString(context->amount_sent,
-                   sizeof(context->amount_sent),
-                   context->decimals_sent,
-                   context->ticker_sent,
-                   msg->msg,
-                   msg->msgLength);
 }
 
 // Set UI for "Receive" screen.
