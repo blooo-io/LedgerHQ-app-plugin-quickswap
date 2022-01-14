@@ -28,6 +28,14 @@
                     ],
                     "method": "swapExactETHForTokens",
                     "plugin": "QuickSwap"
+                },
+                "0x8803dbee": {
+                    "erc20OfInterest": [
+                        "path.0",
+                        "path.-1"
+                    ],
+                    "method": "swapTokensForExactTokens",
+                    "plugin": "QuickSwap"
                 }
             }
         }
