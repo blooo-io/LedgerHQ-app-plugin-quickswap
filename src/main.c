@@ -51,13 +51,22 @@ static const uint8_t SWAP_TOKENS_FOR_EXACT_TOKENS_SELECTOR[SELECTOR_SIZE] = {0x8
                                                                              0xdb,
                                                                              0xee};
 
+// Function: swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256 amountIn, uint256
+// amountOutMin, address[] path, address to, uint256 deadline)
+// MethodID: 0x5c11d795
+static const uint8_t
+    SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR[SELECTOR_SIZE] = {0x5c,
+                                                                                              0x11,
+                                                                                              0xd7,
+                                                                                              0x95};
+
 // Array of all the different quickswap selectors.
 const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     SWAP_EXACT_TOKENS_FOR_TOKENS_SELECTOR,
     SWAP_EXACT_TOKENS_FOR_ETH_SELECTOR,
     SWAP_EXACT_ETH_FOR_TOKENS_SELECTOR,
     SWAP_TOKENS_FOR_EXACT_TOKENS_SELECTOR,
-};
+    SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR};
 
 // QuickSwap uses `0xeeeee` as a dummy address to represent ETH.
 const uint8_t QUICKSWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
