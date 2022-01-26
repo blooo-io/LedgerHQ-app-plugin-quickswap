@@ -52,22 +52,21 @@ typedef enum {
 #define AMOUNT_RECEIVED 1  // Amount sent by the contract to the user.
 #define TOKEN_SENT      2  // Address of the token the user is sending.
 #define TOKEN_RECEIVED  3  // Address of the token sent to the user.
-#define PATH \
-    4  // Path of the different asseths that will get swapped during the trade. First and last
-       // tokens are the ones we care about.
+#define PATH            4
+// Path of the different asseths that will get swapped during the trade. First and last
+// tokens are the ones we care about.
 #define BENEFICIARY                 5  // Address to which the contract will send the tokens.
 #define OFFSET                      6
 #define PATHS_OFFSET                7
 #define PATHS_LEN                   8
 #define TOKEN_RECEIVED_PATHS_OFFSET 9
 #define TOKEN_RECEIVED_PATH         10
-
-#define NONE 11
+#define NONE                        11
 // Number of decimals used when the token wasn't found in the CAL.
 #define DEFAULT_DECIMAL WEI_TO_ETHER
 
 // Ticker used when the token wasn't found in the CAL.
-#define DEFAULT_TICKER ""
+#define DEFAULT_TICKER "MATIC"
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct quickswap_parameters_t {

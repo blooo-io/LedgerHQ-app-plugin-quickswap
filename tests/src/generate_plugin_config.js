@@ -20,10 +20,10 @@ function assert(condition, message) {
 }
 
 // Function to generate the plugin configuration.
-function generate_plugin_config() {
+function generate_plugin_config(testNetwork) {
 
 	var fs = require('fs');
-	var files = fs.readdirSync(`${pluginFolder}/abis/`);
+	var files = fs.readdirSync(`networks/${testNetwork}/${pluginFolder}/abis/`);
 
 	// `contracts_to_abis` holds a maping of contract addresses to abis
 	let contracts_to_abis = {};
@@ -31,15 +31,15 @@ function generate_plugin_config() {
 		assert(abiFileName.toLocaleLowerCase() == abiFileName, `FAILED: File ${abiFileName} should be lower case.`);
 
 		// Strip ".json" suffix
-		let contractAddress = abiFileName.slice(0, abiFileName.length - ".json".length);
+		let contractAddress = abiFileName.slice(0, abiFileName.length - ".abi.json".length);
 		// Load abi
-		let abi = require(`../${pluginFolder}/abis/${abiFileName}`);
+		let abi = require(`../networks/${testNetwork}/${pluginFolder}/abis/${abiFileName}`);
 		// Add it to contracts
 		contracts_to_abis[contractAddress] = abi;
 	}
 
 	// Load the b2c.json file
-	const b2c = require(`../${pluginFolder}/b2c.json`);
+	const b2c = require(`../networks/${testNetwork}/${pluginFolder}/b2c.json`);
 
 	let res = {};
 
