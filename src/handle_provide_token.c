@@ -10,7 +10,9 @@ void handle_provide_token(void *parameters) {
         context->tokens_found |= TOKEN_SENT_FOUND;
     } else if (msg->item1->token.address != NULL) {
         context->decimals_sent = msg->item1->token.decimals;
-        strlcpy(context->ticker_sent, (char *) msg->item1->token.ticker, sizeof(context->ticker_sent));
+        strlcpy(context->ticker_sent,
+                (char *) msg->item1->token.ticker,
+                sizeof(context->ticker_sent));
         context->tokens_found |= TOKEN_SENT_FOUND;
     } else {
         // CAL did not find the token and token is not ETH.
