@@ -140,7 +140,6 @@ static void handle_value_sent(const ethPluginProvideParameter_t *msg,
     copy_parameter(context->amount_sent,
                    msg->pluginSharedRO->txContent->value.length,
                    msg->pluginSharedRO->txContent->value.value);
-
 }
 
 static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg,

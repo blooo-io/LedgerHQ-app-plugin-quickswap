@@ -33,6 +33,6 @@ void handle_provide_token(void *parameters) {
         context->decimals_received = DEFAULT_DECIMAL;
         strlcpy(context->ticker_received, "???", sizeof(context->ticker_received));
         // We will need an additional screen to display a warning message.
-    } 
+    }
     msg->result = ETH_PLUGIN_RESULT_OK;
 }

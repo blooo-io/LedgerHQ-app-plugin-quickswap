@@ -18,7 +18,7 @@ void set_sent_amount_eth(ethQueryContractUI_t *msg, quickswap_parameters_t *cont
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
         strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
     }
- 
+
     amountToString(msg->pluginSharedRO->txContent->value.value,
                    msg->pluginSharedRO->txContent->value.length,
                    context->decimals_sent,
@@ -27,10 +27,9 @@ void set_sent_amount_eth(ethQueryContractUI_t *msg, quickswap_parameters_t *cont
                    msg->msgLength);
 }
 
-
 void set_received_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     strlcpy(msg->title, "Receive Min.", msg->titleLength);
-    
+
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
         strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
     }
@@ -78,7 +77,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
-    }    
+    }
 }
 
 // Set UI for "Beneficiary" screen.
