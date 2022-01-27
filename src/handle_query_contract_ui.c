@@ -28,7 +28,7 @@ void set_sent_amount_eth(ethQueryContractUI_t *msg, quickswap_parameters_t *cont
 }
 
 void set_received_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
-    strlcpy(msg->title, "Receive Min.", msg->titleLength);
+    strlcpy(msg->title, "Receive Min", msg->titleLength);
 
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
         strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
