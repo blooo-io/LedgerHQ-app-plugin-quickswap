@@ -13,7 +13,6 @@ void set_sent_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context)
                    msg->msgLength);
 }
 
-
 void set_sent_amount_max(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     strlcpy(msg->title, "Send Max", msg->titleLength);
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
