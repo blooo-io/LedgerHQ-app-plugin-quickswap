@@ -40,6 +40,21 @@ void set_sent_amount_eth(ethQueryContractUI_t *msg, quickswap_parameters_t *cont
                    msg->msgLength);
 }
 
+void set_sent_amount_eth_max(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Send Max", msg->titleLength);
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+    }
+
+    amountToString(msg->pluginSharedRO->txContent->value.value,
+                   msg->pluginSharedRO->txContent->value.length,
+                   context->decimals_sent,
+                   context->ticker_sent,
+                   msg->msg,
+                   msg->msgLength);
+}
+
+
 void set_received_amount_min(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     strlcpy(msg->title, "Receive Min", msg->titleLength);
 
@@ -82,6 +97,8 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
             set_sent_amount_eth(msg, context);
             break;
         case SWAP_ETH_FOR_EXACT_TOKENS:
+            set_sent_amount_eth_max(msg, context);
+            break;
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
             set_sent_amount_max(msg, context);
             break;
