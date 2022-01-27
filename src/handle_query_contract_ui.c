@@ -1,32 +1,66 @@
 #include "quickswap_plugin.h"
 
-// Set UI for the "Send" screen.
-static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
-    switch (context->selectorIndex) {
-        case SWAP_EXACT_ETH_FOR_TOKENS:
-        case SWAP_ETH_FOR_EXACT_TOKENS:
-        case SWAP_EXACT_TOKENS_FOR_TOKENS:
-        case SWAP_EXACT_TOKENS_FOR_ETH:
-        case SWAP_TOKENS_FOR_EXACT_TOKENS:
-        case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
-            strlcpy(msg->title, "Send", msg->titleLength);
-            if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
-                strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
-            }
-            break;
-        default:
-            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            return;
+void set_sent_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Send", msg->titleLength);
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
     }
-    PRINTF("Amount: %d\n", context->amount_sent);
-
     amountToString(context->amount_sent,
                    sizeof(context->amount_sent),
                    context->decimals_sent,
                    context->ticker_sent,
                    msg->msg,
                    msg->msgLength);
+}
+
+void set_sent_amount_eth(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Send", msg->titleLength);
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+    }
+ 
+    amountToString(msg->pluginSharedRO->txContent->value.value,
+                   msg->pluginSharedRO->txContent->value.length,
+                   context->decimals_sent,
+                   context->ticker_sent,
+                   msg->msg,
+                   msg->msgLength);
+}
+
+
+void set_received_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Receive Min.", msg->titleLength);
+    
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
+        strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
+    }
+
+    amountToString(context->amount_received,
+                   sizeof(context->amount_received),
+                   context->decimals_received,
+                   context->ticker_received,
+                   msg->msg,
+                   msg->msgLength);
+}
+
+// Set UI for the "Send" screen.
+static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    switch (context->selectorIndex) {
+        case SWAP_ETH_FOR_EXACT_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_ETH:
+        case SWAP_TOKENS_FOR_EXACT_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
+            set_sent_amount(msg, context);
+            break;
+        case SWAP_EXACT_ETH_FOR_TOKENS:
+            set_sent_amount_eth(msg, context);
+            break;
+        default:
+            PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            return;
+    }
 }
 
 // Set UI for "Receive" screen.
@@ -38,24 +72,13 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
         case SWAP_ETH_FOR_EXACT_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
-            strlcpy(msg->title, "Receive Min", msg->titleLength);
+            set_received_amount(msg, context);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
-    }
-
-    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
-        strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
-    }
-
-    amountToString(context->amount_received,
-                   sizeof(context->amount_received),
-                   context->decimals_received,
-                   context->ticker_received,
-                   msg->msg,
-                   msg->msgLength);
+    }    
 }
 
 // Set UI for "Beneficiary" screen.

@@ -4,15 +4,11 @@
 #include "eth_plugin_interface.h"
 #include <string.h>
 
-#define PARAMETER_LENGTH 32
-#define SELECTOR_SIZE    4
-
-#define RUN_APPLICATION 1
-
-#define NUM_QUICKSWAP_SELECTORS 6
+#define PARAMETER_LENGTH        32
 #define SELECTOR_SIZE           4
-
-#define PLUGIN_NAME "QuickSwap"
+#define RUN_APPLICATION         1
+#define NUM_QUICKSWAP_SELECTORS 6
+#define PLUGIN_NAME             "QuickSwap"
 
 #define TOKEN_SENT_FOUND     1
 #define TOKEN_RECEIVED_FOUND 1 << 1
@@ -66,7 +62,7 @@ typedef enum {
 #define DEFAULT_DECIMAL WEI_TO_ETHER
 
 // Ticker used when the token wasn't found in the CAL.
-#define DEFAULT_TICKER "MATIC"
+#define DEFAULT_TICKER ""
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct quickswap_parameters_t {
