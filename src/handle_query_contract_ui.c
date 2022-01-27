@@ -13,6 +13,20 @@ void set_sent_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context)
                    msg->msgLength);
 }
 
+
+void set_sent_amount_max(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Send Max", msg->titleLength);
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+    }
+    amountToString(context->amount_sent,
+                   sizeof(context->amount_sent),
+                   context->decimals_sent,
+                   context->ticker_sent,
+                   msg->msg,
+                   msg->msgLength);
+}
+
 void set_sent_amount_eth(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     strlcpy(msg->title, "Send", msg->titleLength);
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
@@ -27,8 +41,23 @@ void set_sent_amount_eth(ethQueryContractUI_t *msg, quickswap_parameters_t *cont
                    msg->msgLength);
 }
 
-void set_received_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+void set_received_amount_min(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     strlcpy(msg->title, "Receive Min", msg->titleLength);
+
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
+        strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
+    }
+
+    amountToString(context->amount_received,
+                   sizeof(context->amount_received),
+                   context->decimals_received,
+                   context->ticker_received,
+                   msg->msg,
+                   msg->msgLength);
+}
+
+void set_received_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Receive", msg->titleLength);
 
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
         strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
@@ -45,15 +74,17 @@ void set_received_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *cont
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     switch (context->selectorIndex) {
-        case SWAP_ETH_FOR_EXACT_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_ETH:
-        case SWAP_TOKENS_FOR_EXACT_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             set_sent_amount(msg, context);
             break;
         case SWAP_EXACT_ETH_FOR_TOKENS:
             set_sent_amount_eth(msg, context);
+            break;
+        case SWAP_ETH_FOR_EXACT_TOKENS:
+        case SWAP_TOKENS_FOR_EXACT_TOKENS:
+            set_sent_amount_max(msg, context);
             break;
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
@@ -68,9 +99,11 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_ETH:
         case SWAP_EXACT_ETH_FOR_TOKENS:
-        case SWAP_TOKENS_FOR_EXACT_TOKENS:
-        case SWAP_ETH_FOR_EXACT_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
+            set_received_amount_min(msg, context);
+            break;
+        case SWAP_ETH_FOR_EXACT_TOKENS:
+        case SWAP_TOKENS_FOR_EXACT_TOKENS:
             set_received_amount(msg, context);
             break;
         default:

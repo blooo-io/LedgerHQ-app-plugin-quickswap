@@ -5,7 +5,7 @@ import { parseEther, parseUnits, RLP } from "ethers/lib/utils";
 import { ethers } from "ethers";
 
 
-const transactionUploadDelay = 5000;
+const transactionUploadDelay = 10000;
 
 const sim_options_generic = {
   logging: true,
