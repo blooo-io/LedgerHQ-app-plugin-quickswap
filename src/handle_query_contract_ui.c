@@ -100,6 +100,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
             set_sent_amount_eth_max(msg, context);
             break;
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
+        case SWAP_TOKENS_FOR_EXACT_ETH:
             set_sent_amount_max(msg, context);
             break;
         default:
@@ -121,6 +122,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
             break;
         case SWAP_ETH_FOR_EXACT_TOKENS:
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
+        case SWAP_TOKENS_FOR_EXACT_ETH:
             set_received_amount(msg, context);
             break;
         default:

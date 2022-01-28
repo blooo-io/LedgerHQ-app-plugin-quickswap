@@ -203,6 +203,7 @@ void handle_provide_parameter(void *parameters) {
                 handle_swap_exact_tokens(msg, context);
                 break;
             case SWAP_TOKENS_FOR_EXACT_TOKENS:
+            case SWAP_TOKENS_FOR_EXACT_ETH:
                 handle_swap_tokens_for_exact_tokens(msg, context);
                 break;
             case SWAP_EXACT_ETH_FOR_TOKENS:

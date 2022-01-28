@@ -42,6 +42,7 @@ void handle_init_contract(void *parameters) {
         case SWAP_TOKENS_FOR_EXACT_TOKENS:
         case SWAP_EXACT_ETH_FOR_TOKENS:
         case SWAP_ETH_FOR_EXACT_TOKENS:
+        case SWAP_TOKENS_FOR_EXACT_ETH:
             context->next_param = AMOUNT_RECEIVED;
             break;
         default:

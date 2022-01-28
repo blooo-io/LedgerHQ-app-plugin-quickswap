@@ -14,6 +14,7 @@ void handle_query_contract_id(void *parameters) {
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
         case SWAP_ETH_FOR_EXACT_TOKENS:
+        case SWAP_TOKENS_FOR_EXACT_ETH:
             strlcpy(msg->version, "Swap", msg->versionLength);
             break;
         default:
