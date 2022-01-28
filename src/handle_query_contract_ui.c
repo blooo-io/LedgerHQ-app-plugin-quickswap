@@ -54,7 +54,6 @@ void set_sent_amount_eth_max(ethQueryContractUI_t *msg, quickswap_parameters_t *
                    msg->msgLength);
 }
 
-
 void set_received_amount_min(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     strlcpy(msg->title, "Receive Min", msg->titleLength);
 
