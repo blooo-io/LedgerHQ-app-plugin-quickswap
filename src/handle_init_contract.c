@@ -36,6 +36,7 @@ void handle_init_contract(void *parameters) {
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_ETH:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             context->next_param = AMOUNT_SENT;
             break;
         case SWAP_TOKENS_FOR_EXACT_TOKENS:

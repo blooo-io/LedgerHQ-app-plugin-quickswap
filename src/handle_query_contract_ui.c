@@ -91,6 +91,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
         case SWAP_EXACT_TOKENS_FOR_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_ETH:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             set_sent_amount(msg, context);
             break;
         case SWAP_EXACT_ETH_FOR_TOKENS:
@@ -116,6 +117,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
         case SWAP_EXACT_TOKENS_FOR_ETH:
         case SWAP_EXACT_ETH_FOR_TOKENS:
         case SWAP_EXACT_TOKENS_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
+        case SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             set_received_amount_min(msg, context);
             break;
         case SWAP_ETH_FOR_EXACT_TOKENS:
