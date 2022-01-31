@@ -128,6 +128,13 @@
                     ],
                     "method": "removeLiquidityETHSupportingFeeOnTransferTokens",
                     "plugin": "QuickSwap"
+                },
+                "0x5b0d5984": {
+                    "erc20OfInterest": [
+                        "token"
+                    ],
+                    "method": "removeLiquidityETHWithPermitSupportingFeeOnTransferTokens",
+                    "plugin": "QuickSwap"
                 }
             }
         }

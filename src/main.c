@@ -134,6 +134,14 @@ static const uint8_t REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER_SELECTOR[SE
     0x79,
     0xeb};
 
+// Function: removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(address token, uint256
+// liquidity, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline, bool
+// approveMax, uint8 v, bytes32 r, bytes32 s)
+// MethodID: 0x5b0d5984
+static const uint8_t
+    REMOVE_LIQUIDITY_ETH_WITH_PERMIT_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR[SELECTOR_SIZE] =
+        {0x5b, 0x0d, 0x59, 0x84};
+
 // Array of all the different quickswap selectors.
 const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     SWAP_EXACT_TOKENS_FOR_TOKENS_SELECTOR,
@@ -151,7 +159,8 @@ const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     REMOVE_LIQUIDITY_ETH_SELECTOR,
     REMOVE_LIQUIDITY_WITH_PERMIT_SELECTOR,
     REMOVE_LIQUIDITY_ETH_WITH_PERMIT_SELECTOR,
-    REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER_SELECTOR};
+    REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER_SELECTOR,
+    REMOVE_LIQUIDITY_ETH_WITH_PERMIT_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR};
 
 // QuickSwap uses `0xeeeee` as a dummy address to represent ETH.
 const uint8_t QUICKSWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

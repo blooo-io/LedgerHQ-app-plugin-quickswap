@@ -3,7 +3,7 @@ import { processTest, populateTransaction } from "./test.fixture";
 const contractName = "QuickSwap";
 
 const testLabel = "removeLiquidityETHSupportingFeeOnTransferTokens"; // <= Name of the test
-const testDirSuffix = "remove_liquidity_eth_supporting_fee_on_transfer_with_permit"; // <= directory to compare device snapshots to
+const testDirSuffix = "remove_liquidity_eth_supporting_fee_on_transfer_tokens"; // <= directory to compare device snapshots to
 const testNetwork = "polygon";
 const signedPlugin = false;
 

@@ -53,7 +53,8 @@ void handle_init_contract(void *parameters) {
         case REMOVE_LIQUIDITY_ETH:
         case REMOVE_LIQUIDITY_WITH_PERMIT:
         case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
-        case REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER:
+        case REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
+        case REMOVE_LIQUIDITY_ETH_WITH_PERMIT_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             context->next_param = TOKEN_SENT;
             break;
 
