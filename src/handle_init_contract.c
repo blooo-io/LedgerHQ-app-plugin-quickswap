@@ -46,10 +46,12 @@ void handle_init_contract(void *parameters) {
         case SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             context->next_param = AMOUNT_RECEIVED;
             break;
+            
         case ADD_LIQUIDITY:
         case ADD_LIQUIDITY_ETH:
         case REMOVE_LIQUIDITY:
         case REMOVE_LIQUIDITY_ETH:
+        case REMOVE_LIQUIDITY_WITH_PERMIT:
             context->next_param = TOKEN_SENT;
             break;
 

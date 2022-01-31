@@ -196,10 +196,10 @@ static void handle_add_remove_liquidity(ethPluginProvideParameter_t *msg,
         case TOKEN_RECEIVED:  // TokenB
             handle_token_received(msg, context);
             context->next_param = AMOUNT_SENT;
-            if (context->selectorIndex == REMOVE_LIQUIDITY) {
-                context->skip = 1;
-            } else {
+            if (context->selectorIndex == ADD_LIQUIDITY ) {
                 context->skip = 2;
+            } else {
+                context->skip = 1;
             }
 
             break;
@@ -322,6 +322,7 @@ void handle_provide_parameter(void *parameters) {
 
             case ADD_LIQUIDITY:
             case REMOVE_LIQUIDITY:
+            case REMOVE_LIQUIDITY_WITH_PERMIT:
                 handle_add_remove_liquidity(msg, context);
                 break;
 

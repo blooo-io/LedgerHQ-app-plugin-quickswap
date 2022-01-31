@@ -6,8 +6,7 @@ void handle_finalize(void *parameters) {
 
     if (context->valid) {
         msg->numScreens = 2;
-        if ((context->selectorIndex == SWAP_EXACT_TOKENS_FOR_TOKENS) &&
-            (strncmp(context->beneficiary,
+        if ((strncmp(context->beneficiary,
                      (const unsigned char *) NULL_ETH_ADDRESS,
                      ADDRESS_LENGTH) != 0)) {
             // An addiitonal screen is required to display the `beneficiary` field.

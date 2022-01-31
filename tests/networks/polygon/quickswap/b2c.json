@@ -106,6 +106,14 @@
                     ],
                     "method": "removeLiquidityETH",
                     "plugin": "QuickSwap"
+                },
+                "0x2195995c": {
+                    "erc20OfInterest": [
+                        "tokenA",
+                        "tokenB"
+                    ],
+                    "method": "removeLiquidityWithPermit",
+                    "plugin": "QuickSwap"
                 }
             }
         }

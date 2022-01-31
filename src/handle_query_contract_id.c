@@ -18,14 +18,18 @@ void handle_query_contract_id(void *parameters) {
         case SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             strlcpy(msg->version, "Swap", msg->versionLength);
             break;
+            
         case ADD_LIQUIDITY:
         case ADD_LIQUIDITY_ETH:
             strlcpy(msg->version, "Add Liquidity", msg->versionLength);
             break;
+
         case REMOVE_LIQUIDITY:
         case REMOVE_LIQUIDITY_ETH:
+        case REMOVE_LIQUIDITY_WITH_PERMIT:
             strlcpy(msg->version, "Remove Liquidity", msg->versionLength);
             break;
+
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
