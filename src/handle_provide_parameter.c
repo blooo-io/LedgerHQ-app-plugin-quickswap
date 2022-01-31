@@ -53,8 +53,7 @@ static void handle_token_received(const ethPluginProvideParameter_t *msg,
     PRINTF("TOKEN RECEIVED: %.*H\n", ADDRESS_LENGTH, context->contract_address_received);
 }
 
-static void handle_token_sent_eth(const ethPluginProvideParameter_t *msg,
-                                  quickswap_parameters_t *context) {
+static void handle_token_sent_eth(quickswap_parameters_t *context) {
     memset(context->contract_address_sent, 0, sizeof(context->contract_address_sent));
     memcpy(context->contract_address_sent,
            QUICKSWAP_ETH_ADDRESS,
@@ -147,8 +146,8 @@ static void handle_value_sent(const ethPluginProvideParameter_t *msg,
     ethPluginSharedRO_t *pluginSharedRO = (ethPluginSharedRO_t *) msg->pluginSharedRO;
 
     copy_parameter(context->amount_sent,
-                   msg->pluginSharedRO->txContent->value.length,
-                   msg->pluginSharedRO->txContent->value.value);
+                   pluginSharedRO->txContent->value.length,
+                   pluginSharedRO->txContent->value.value);
 }
 
 static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg,
@@ -196,7 +195,7 @@ static void handle_add_remove_liquidity(ethPluginProvideParameter_t *msg,
         case TOKEN_RECEIVED:  // TokenB
             handle_token_received(msg, context);
             context->next_param = AMOUNT_SENT;
-            if (context->selectorIndex == ADD_LIQUIDITY ) {
+            if (context->selectorIndex == ADD_LIQUIDITY) {
                 context->skip = 2;
             } else {
                 context->skip = 1;
@@ -228,37 +227,7 @@ static void handle_add_remove_liquidity_eth(ethPluginProvideParameter_t *msg,
                                             quickswap_parameters_t *context) {
     switch (context->next_param) {
         case TOKEN_SENT:  // tokenA
-            handle_token_sent_eth(msg, context);
-            handle_token_received(msg, context);
-            context->next_param = AMOUNT_RECEIVED;
-            context->skip = 1;
-            break;
-        case AMOUNT_RECEIVED:  // TokenA Min Amount
-            handle_amount_received(msg, context);
-            context->next_param = AMOUNT_SENT;
-            break;
-        case AMOUNT_SENT:  // ETH Min Amount
-            handle_amount_sent(msg, context);
-            context->next_param = BENEFICIARY;
-            break;
-        case BENEFICIARY:  // to
-            handle_beneficiary(msg, context);
-            context->next_param = NONE;
-            break;
-        case NONE:
-            break;
-        default:
-            PRINTF("Param not supported\n");
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            break;
-    }
-}
-
-static void handle_remove_liquidity_eth(ethPluginProvideParameter_t *msg,
-                                        quickswap_parameters_t *context) {
-    switch (context->next_param) {
-        case TOKEN_SENT:  // tokenA
-            handle_token_sent_eth(msg, context);
+            handle_token_sent_eth(context);
             handle_token_received(msg, context);
             context->next_param = AMOUNT_RECEIVED;
             context->skip = 1;
@@ -328,6 +297,7 @@ void handle_provide_parameter(void *parameters) {
 
             case ADD_LIQUIDITY_ETH:
             case REMOVE_LIQUIDITY_ETH:
+            case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
                 handle_add_remove_liquidity_eth(msg, context);
                 break;
 

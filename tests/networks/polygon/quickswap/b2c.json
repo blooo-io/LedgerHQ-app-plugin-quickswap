@@ -114,6 +114,13 @@
                     ],
                     "method": "removeLiquidityWithPermit",
                     "plugin": "QuickSwap"
+                },
+                "0xded9382a": {
+                    "erc20OfInterest": [
+                        "token"
+                    ],
+                    "method": "removeLiquidityETHWithPermit",
+                    "plugin": "QuickSwap"
                 }
             }
         }

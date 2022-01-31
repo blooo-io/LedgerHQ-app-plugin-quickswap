@@ -111,7 +111,19 @@ static const uint8_t REMOVE_LIQUIDITY_ETH_SELECTOR[SELECTOR_SIZE] = {0x02, 0x75,
 // amountAMin, uint256 amountBMin, address to, uint256 deadline, bool approveMax, uint8 v, bytes32
 // r, bytes32 s)
 // MethodID: 0x2195995c
-static const uint8_t REMOVE_LIQUIDITY_WITH_PERMIT_SELECTOR[SELECTOR_SIZE] = {0x21, 0x95, 0x99, 0x5c};
+static const uint8_t REMOVE_LIQUIDITY_WITH_PERMIT_SELECTOR[SELECTOR_SIZE] = {0x21,
+                                                                             0x95,
+                                                                             0x99,
+                                                                             0x5c};
+
+// Function: removeLiquidityETHWithPermit(address token, uint256 liquidity, uint256 amountTokenMin,
+// uint256 amountETHMin, address to, uint256 deadline, bool approveMax, uint8 v, bytes32 r, bytes32
+// s)
+// MethodID: 0xded9382a
+static const uint8_t REMOVE_LIQUIDITY_ETH_WITH_PERMIT_SELECTOR[SELECTOR_SIZE] = {0xde,
+                                                                                 0xd9,
+                                                                                 0x38,
+                                                                                 0x2a};
 
 // Array of all the different quickswap selectors.
 const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
@@ -128,7 +140,8 @@ const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     ADD_LIQUIDITY_ETH_SELECTOR,
     REMOVE_LIQUIDITY_SELECTOR,
     REMOVE_LIQUIDITY_ETH_SELECTOR,
-    REMOVE_LIQUIDITY_WITH_PERMIT_SELECTOR};
+    REMOVE_LIQUIDITY_WITH_PERMIT_SELECTOR,
+    REMOVE_LIQUIDITY_ETH_WITH_PERMIT_SELECTOR};
 
 // QuickSwap uses `0xeeeee` as a dummy address to represent ETH.
 const uint8_t QUICKSWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

@@ -169,6 +169,8 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
         case REMOVE_LIQUIDITY:
         case REMOVE_LIQUIDITY_ETH:
         case REMOVE_LIQUIDITY_WITH_PERMIT:
+        case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
+
             set_amount_a_min_remove(msg, context);
             break;
 
@@ -204,6 +206,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
         case REMOVE_LIQUIDITY:
         case REMOVE_LIQUIDITY_ETH:
         case REMOVE_LIQUIDITY_WITH_PERMIT:
+        case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
             set_amount_b_min_remove(msg, context);
             break;
 
@@ -222,7 +225,7 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, quickswap_parameters_t
     msg->msg[1] = 'x';
 
     getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
-                                  (uint8_t *) msg->msg + 2,
+                                  (char *) msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
                                   0);
 }
@@ -297,6 +300,7 @@ static screens_t get_screen(const ethQueryContractUI_t *msg,
             return ERROR;
             break;
     }
+    return ERROR;
 }
 
 void handle_query_contract_ui(void *parameters) {
