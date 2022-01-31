@@ -17,7 +17,6 @@ void handle_finalize(void *parameters) {
             // Address is not network token (0xeee...) so we will need to look up the token in the
             // CAL.
             msg->tokenLookup1 = context->contract_address_sent;
-            print_bytes(context->contract_address_sent, sizeof(context->contract_address_sent));
             PRINTF("Setting address sent to: %.*H\n",
                    ADDRESS_LENGTH,
                    context->contract_address_sent);
@@ -40,8 +39,6 @@ void handle_finalize(void *parameters) {
                    ADDRESS_LENGTH,
                    context->contract_address_received);
             msg->tokenLookup2 = context->contract_address_received;
-            print_bytes(context->contract_address_received,
-                        sizeof(context->contract_address_received));
         } else {
             msg->tokenLookup2 = NULL;
         }

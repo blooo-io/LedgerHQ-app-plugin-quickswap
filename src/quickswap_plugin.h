@@ -7,7 +7,7 @@
 #define PARAMETER_LENGTH        32
 #define SELECTOR_SIZE           4
 #define RUN_APPLICATION         1
-#define NUM_QUICKSWAP_SELECTORS 9
+#define NUM_QUICKSWAP_SELECTORS 10
 #define PLUGIN_NAME             "QuickSwap"
 
 #define TOKEN_SENT_FOUND     1
@@ -32,7 +32,8 @@ typedef enum {
     SWAP_ETH_FOR_EXACT_TOKENS,
     SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS,
     SWAP_TOKENS_FOR_EXACT_ETH,
-    SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS
+    SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS,
+    ADD_LIQUIDITY
 } quickswapSelector_t;
 
 extern const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS];
@@ -69,28 +70,30 @@ typedef enum {
 
 // Shared global memory with Ethereum app. Must be at most 5 * 32 bytes.
 typedef struct quickswap_parameters_t {
-    uint8_t amount_sent[INT256_LENGTH];
-    uint8_t amount_received[INT256_LENGTH];
-    char beneficiary[ADDRESS_LENGTH];
-    uint8_t contract_address_sent[ADDRESS_LENGTH];
-    uint8_t contract_address_received[ADDRESS_LENGTH];
-    char ticker_sent[MAX_TICKER_LEN];
-    char ticker_received[MAX_TICKER_LEN];
+    uint8_t amount_sent[INT256_LENGTH];                 // 32 bytes
+    uint8_t amount_received[INT256_LENGTH];             // 32 bytes
+    uint8_t contract_address_sent[ADDRESS_LENGTH];      // 20 bytes
+    uint8_t contract_address_received[ADDRESS_LENGTH];  // 20 bytes
+    char beneficiary[ADDRESS_LENGTH];                   // 20 bytes
+    char ticker_sent[MAX_TICKER_LEN];                   // 12 bytes
+    char ticker_received[MAX_TICKER_LEN];               // 12 bytes
 
-    // 32 * 2 + 20 * 3 + 12 * 2 == 64 + 60 + 24 == 144
-    // 32 * 5 == 160 bytes so there are 160 - 144 == 16 bytes left.
+    // sub total : 148 bytes
 
-    uint16_t offset;
-    uint16_t checkpoint;
-    uint8_t next_param;
-    uint8_t tokens_found;
-    uint8_t valid;
-    uint8_t decimals_sent;
-    uint8_t decimals_received;
-    uint8_t selectorIndex;
-    uint8_t array_len;
-    uint8_t skip;
-    // 4 * 1 + 2 * 2 + 7 * 1 == 8 + 7 == 15 bytes. There are 16 - 15 == 1 byte left.
+    uint16_t offset;            // 2 bytes
+    uint16_t checkpoint;        // 2 bytes
+    uint8_t next_param;         // 1 byte
+    uint8_t tokens_found;       // 1 byte
+    uint8_t valid;              // 1 byte
+    uint8_t decimals_sent;      // 1 byte
+    uint8_t decimals_received;  // 1 byte
+    uint8_t selectorIndex;      // 1 byte
+    uint8_t array_len;          // 1 byte
+    uint8_t skip;               // 1 byte
+
+    // sub total : 12 bytes
+    // total : 148b + 12b = 160 bytes : no bytes left
+
 } quickswap_parameters_t;
 
 void handle_init_contract(void *parameters);

@@ -46,6 +46,9 @@ void handle_init_contract(void *parameters) {
         case SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
             context->next_param = AMOUNT_RECEIVED;
             break;
+        case ADD_LIQUIDITY:
+            context->next_param = TOKEN_SENT;
+            break;
         default:
             PRINTF("Missing selectorIndex\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;

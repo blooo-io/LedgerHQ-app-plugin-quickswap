@@ -76,8 +76,15 @@
                     ],
                     "method": "swapExactETHForTokensSupportingFeeOnTransferTokens",
                     "plugin": "QuickSwap"
+                },
+                "0xe8e33700": {
+                    "erc20OfInterest": [
+                        "tokenA",
+                        "tokenB"
+                    ],
+                    "method": "addLiquidity",
+                    "plugin": "QuickSwap"
                 }
-                
             }
         }
     ],

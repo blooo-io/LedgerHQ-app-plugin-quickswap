@@ -84,6 +84,34 @@ void set_received_amount(ethQueryContractUI_t *msg, quickswap_parameters_t *cont
                    msg->msgLength);
 }
 
+void set_amount_a_min(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Add Min", msg->titleLength);
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
+        strlcpy(context->ticker_sent, msg->network_ticker, sizeof(context->ticker_sent));
+    }
+    amountToString(context->amount_sent,
+                   sizeof(context->amount_sent),
+                   context->decimals_sent,
+                   context->ticker_sent,
+                   msg->msg,
+                   msg->msgLength);
+}
+
+void set_amount_b_min(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
+    strlcpy(msg->title, "Add Min", msg->titleLength);
+
+    if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
+        strlcpy(context->ticker_received, msg->network_ticker, sizeof(context->ticker_received));
+    }
+
+    amountToString(context->amount_received,
+                   sizeof(context->amount_received),
+                   context->decimals_received,
+                   context->ticker_received,
+                   msg->msg,
+                   msg->msgLength);
+}
+
 // Set UI for the "Send" screen.
 static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *context) {
     switch (context->selectorIndex) {
@@ -104,6 +132,11 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
         case SWAP_TOKENS_FOR_EXACT_ETH:
             set_sent_amount_max(msg, context);
             break;
+
+        case ADD_LIQUIDITY:
+            set_amount_a_min(msg, context);
+            break;
+
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
@@ -127,6 +160,11 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
         case SWAP_TOKENS_FOR_EXACT_ETH:
             set_received_amount(msg, context);
             break;
+
+        case ADD_LIQUIDITY:
+            set_amount_b_min(msg, context);
+            break;
+
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;

@@ -87,6 +87,11 @@ static const uint8_t
                                                                                            0xde,
                                                                                            0x95};
 
+// Function: addLiquidity(address tokenA, address tokenB, uint256 amountADesired, uint256
+// amountBDesired, uint256 amountAMin, uint256 amountBMin, address to, uint256 deadline)
+// MethodID: 0xe8e33700
+static const uint8_t ADD_LIQUIDITY_SELECTOR[SELECTOR_SIZE] = {0xe8, 0xe3, 0x37, 0x00};
+
 // Array of all the different quickswap selectors.
 const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     SWAP_EXACT_TOKENS_FOR_TOKENS_SELECTOR,
@@ -97,7 +102,8 @@ const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     SWAP_ETH_FOR_EXACT_TOKENS_SELECTOR,
     SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR,
     SWAP_TOKENS_FOR_EXACT_ETH_SELECTOR,
-    SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR};
+    SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR,
+    ADD_LIQUIDITY_SELECTOR};
 
 // QuickSwap uses `0xeeeee` as a dummy address to represent ETH.
 const uint8_t QUICKSWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
