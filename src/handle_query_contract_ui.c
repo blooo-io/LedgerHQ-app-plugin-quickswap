@@ -134,6 +134,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
             break;
 
         case ADD_LIQUIDITY:
+        case ADD_LIQUIDITY_ETH:
             set_amount_a_min(msg, context);
             break;
 
@@ -162,6 +163,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
             break;
 
         case ADD_LIQUIDITY:
+        case ADD_LIQUIDITY_ETH:
             set_amount_b_min(msg, context);
             break;
 

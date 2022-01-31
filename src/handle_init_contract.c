@@ -47,6 +47,7 @@ void handle_init_contract(void *parameters) {
             context->next_param = AMOUNT_RECEIVED;
             break;
         case ADD_LIQUIDITY:
+        case ADD_LIQUIDITY_ETH:
             context->next_param = TOKEN_SENT;
             break;
         default:

@@ -92,6 +92,11 @@ static const uint8_t
 // MethodID: 0xe8e33700
 static const uint8_t ADD_LIQUIDITY_SELECTOR[SELECTOR_SIZE] = {0xe8, 0xe3, 0x37, 0x00};
 
+// Function: addLiquidityETH(address token, uint256 amountTokenDesired, uint256 amountTokenMin,
+// uint256 amountETHMin, address to, uint256 deadline)
+// MethodID: 0xf305d719
+static const uint8_t ADD_LIQUIDITY_ETH_SELECTOR[SELECTOR_SIZE] = {0xf3, 0x05, 0xd7, 0x19};
+
 // Array of all the different quickswap selectors.
 const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     SWAP_EXACT_TOKENS_FOR_TOKENS_SELECTOR,
@@ -103,12 +108,13 @@ const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS] = {
     SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR,
     SWAP_TOKENS_FOR_EXACT_ETH_SELECTOR,
     SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS_SELECTOR,
-    ADD_LIQUIDITY_SELECTOR};
+    ADD_LIQUIDITY_SELECTOR,
+    ADD_LIQUIDITY_ETH_SELECTOR};
 
 // QuickSwap uses `0xeeeee` as a dummy address to represent ETH.
-const uint8_t QUICKSWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                                       0xee, 0xee, 0xee, 0xee, 0xee, 0xee, 0xee,
-                                                       0xee, 0xee, 0xee, 0xee, 0xee, 0xee};
+const uint8_t QUICKSWAP_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                                                       0x00, 0x00, 0x00, 0x00, 0x10, 0x10};
 
 // Used to indicate that the beneficiary should be the sender.
 const uint8_t NULL_ETH_ADDRESS[ADDRESS_LENGTH] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

@@ -19,6 +19,7 @@ void handle_query_contract_id(void *parameters) {
             strlcpy(msg->version, "Swap", msg->versionLength);
             break;
         case ADD_LIQUIDITY:
+        case ADD_LIQUIDITY_ETH:
             strlcpy(msg->version, "Add Liquidity", msg->versionLength);
             break;
         default:
