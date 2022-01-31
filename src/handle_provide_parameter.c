@@ -249,6 +249,39 @@ static void handle_add_liquidity_eth(ethPluginProvideParameter_t *msg,
     }
 }
 
+static void handle_remove_liquidity(ethPluginProvideParameter_t *msg,
+                                    quickswap_parameters_t *context) {
+    switch (context->next_param) {
+        case TOKEN_SENT:  // tokenA
+            handle_token_sent(msg, context);
+            context->next_param = TOKEN_RECEIVED;
+            break;
+        case TOKEN_RECEIVED:  // TokenB
+            handle_token_received(msg, context);
+            context->next_param = AMOUNT_SENT;
+            context->skip = 1;
+            break;
+        case AMOUNT_SENT:  // TokenA Min Amount
+            handle_amount_sent(msg, context);
+            context->next_param = AMOUNT_RECEIVED;
+            break;
+        case AMOUNT_RECEIVED:  // TokenB Min Amount
+            handle_amount_received(msg, context);
+            context->next_param = BENEFICIARY;
+            break;
+        case BENEFICIARY:  // to
+            handle_beneficiary(msg, context);
+            context->next_param = NONE;
+            break;
+        case NONE:
+            break;
+        default:
+            PRINTF("Param not supported\n");
+            msg->result = ETH_PLUGIN_RESULT_ERROR;
+            break;
+    }
+}
+
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
     quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
@@ -288,6 +321,9 @@ void handle_provide_parameter(void *parameters) {
                 break;
             case ADD_LIQUIDITY_ETH:
                 handle_add_liquidity_eth(msg, context);
+                break;
+            case REMOVE_LIQUIDITY:
+                handle_remove_liquidity(msg, context);
                 break;
             default:
                 PRINTF("Selector Index %d not supported\n", context->selectorIndex);

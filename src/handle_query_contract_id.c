@@ -22,6 +22,9 @@ void handle_query_contract_id(void *parameters) {
         case ADD_LIQUIDITY_ETH:
             strlcpy(msg->version, "Add Liquidity", msg->versionLength);
             break;
+        case REMOVE_LIQUIDITY:
+            strlcpy(msg->version, "Remove Liquidity", msg->versionLength);
+            break;
         default:
             PRINTF("Selector Index :%d not supported\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;

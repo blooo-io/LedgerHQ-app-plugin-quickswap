@@ -87,8 +87,17 @@
                 },
                 "0xf305d719": {
                     "erc20OfInterest": [
-                        "token"                    ],
+                        "token"
+                    ],
                     "method": "addLiquidityETH",
+                    "plugin": "QuickSwap"
+                },
+                "0xbaa2abde": {
+                    "erc20OfInterest": [
+                        "tokenA",
+                        "tokenB"
+                    ],
+                    "method": "removeLiquidity",
                     "plugin": "QuickSwap"
                 }
             }

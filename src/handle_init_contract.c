@@ -48,8 +48,10 @@ void handle_init_contract(void *parameters) {
             break;
         case ADD_LIQUIDITY:
         case ADD_LIQUIDITY_ETH:
+        case REMOVE_LIQUIDITY:
             context->next_param = TOKEN_SENT;
             break;
+        
         default:
             PRINTF("Missing selectorIndex\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
