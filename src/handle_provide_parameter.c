@@ -208,6 +208,7 @@ void handle_provide_parameter(void *parameters) {
                 break;
             case SWAP_EXACT_ETH_FOR_TOKENS:
             case SWAP_ETH_FOR_EXACT_TOKENS:
+            case SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
                 handle_swap_exact_eth_for_tokens(msg, context);
                 break;
             default:
