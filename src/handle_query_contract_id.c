@@ -23,6 +23,7 @@ void handle_query_contract_id(void *parameters) {
             strlcpy(msg->version, "Add Liquidity", msg->versionLength);
             break;
         case REMOVE_LIQUIDITY:
+        case REMOVE_LIQUIDITY_ETH:
             strlcpy(msg->version, "Remove Liquidity", msg->versionLength);
             break;
         default:

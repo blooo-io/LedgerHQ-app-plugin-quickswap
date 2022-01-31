@@ -7,7 +7,7 @@
 #define PARAMETER_LENGTH        32
 #define SELECTOR_SIZE           4
 #define RUN_APPLICATION         1
-#define NUM_QUICKSWAP_SELECTORS 12
+#define NUM_QUICKSWAP_SELECTORS 13
 #define PLUGIN_NAME             "QuickSwap"
 
 #define TOKEN_SENT_FOUND     1
@@ -35,7 +35,8 @@ typedef enum {
     SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS,
     ADD_LIQUIDITY,
     ADD_LIQUIDITY_ETH,
-    REMOVE_LIQUIDITY
+    REMOVE_LIQUIDITY,
+    REMOVE_LIQUIDITY_ETH
 } quickswapSelector_t;
 
 extern const uint8_t *const QUICKSWAP_SELECTORS[NUM_QUICKSWAP_SELECTORS];

@@ -99,6 +99,13 @@
                     ],
                     "method": "removeLiquidity",
                     "plugin": "QuickSwap"
+                },
+                "0x02751cec": {
+                    "erc20OfInterest": [
+                        "token"
+                    ],
+                    "method": "removeLiquidityETH",
+                    "plugin": "QuickSwap"
                 }
             }
         }

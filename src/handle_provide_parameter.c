@@ -186,8 +186,8 @@ static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg,
     }
 }
 
-static void handle_add_liquidity(ethPluginProvideParameter_t *msg,
-                                 quickswap_parameters_t *context) {
+static void handle_add_remove_liquidity(ethPluginProvideParameter_t *msg,
+                                        quickswap_parameters_t *context) {
     switch (context->next_param) {
         case TOKEN_SENT:  // tokenA
             handle_token_sent(msg, context);
@@ -196,7 +196,12 @@ static void handle_add_liquidity(ethPluginProvideParameter_t *msg,
         case TOKEN_RECEIVED:  // TokenB
             handle_token_received(msg, context);
             context->next_param = AMOUNT_SENT;
-            context->skip = 2;
+            if (context->selectorIndex == REMOVE_LIQUIDITY) {
+                context->skip = 1;
+            } else {
+                context->skip = 2;
+            }
+
             break;
         case AMOUNT_SENT:  // TokenA Min Amount
             handle_amount_sent(msg, context);
@@ -219,8 +224,8 @@ static void handle_add_liquidity(ethPluginProvideParameter_t *msg,
     }
 }
 
-static void handle_add_liquidity_eth(ethPluginProvideParameter_t *msg,
-                                     quickswap_parameters_t *context) {
+static void handle_add_remove_liquidity_eth(ethPluginProvideParameter_t *msg,
+                                            quickswap_parameters_t *context) {
     switch (context->next_param) {
         case TOKEN_SENT:  // tokenA
             handle_token_sent_eth(msg, context);
@@ -249,24 +254,21 @@ static void handle_add_liquidity_eth(ethPluginProvideParameter_t *msg,
     }
 }
 
-static void handle_remove_liquidity(ethPluginProvideParameter_t *msg,
-                                    quickswap_parameters_t *context) {
+static void handle_remove_liquidity_eth(ethPluginProvideParameter_t *msg,
+                                        quickswap_parameters_t *context) {
     switch (context->next_param) {
         case TOKEN_SENT:  // tokenA
-            handle_token_sent(msg, context);
-            context->next_param = TOKEN_RECEIVED;
-            break;
-        case TOKEN_RECEIVED:  // TokenB
+            handle_token_sent_eth(msg, context);
             handle_token_received(msg, context);
-            context->next_param = AMOUNT_SENT;
+            context->next_param = AMOUNT_RECEIVED;
             context->skip = 1;
             break;
-        case AMOUNT_SENT:  // TokenA Min Amount
-            handle_amount_sent(msg, context);
-            context->next_param = AMOUNT_RECEIVED;
-            break;
-        case AMOUNT_RECEIVED:  // TokenB Min Amount
+        case AMOUNT_RECEIVED:  // TokenA Min Amount
             handle_amount_received(msg, context);
+            context->next_param = AMOUNT_SENT;
+            break;
+        case AMOUNT_SENT:  // ETH Min Amount
+            handle_amount_sent(msg, context);
             context->next_param = BENEFICIARY;
             break;
         case BENEFICIARY:  // to
@@ -311,20 +313,23 @@ void handle_provide_parameter(void *parameters) {
             case SWAP_TOKENS_FOR_EXACT_ETH:
                 handle_swap_tokens_for_exact_tokens(msg, context);
                 break;
+
             case SWAP_EXACT_ETH_FOR_TOKENS:
             case SWAP_ETH_FOR_EXACT_TOKENS:
             case SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
                 handle_swap_exact_eth_for_tokens(msg, context);
                 break;
+
             case ADD_LIQUIDITY:
-                handle_add_liquidity(msg, context);
-                break;
-            case ADD_LIQUIDITY_ETH:
-                handle_add_liquidity_eth(msg, context);
-                break;
             case REMOVE_LIQUIDITY:
-                handle_remove_liquidity(msg, context);
+                handle_add_remove_liquidity(msg, context);
                 break;
+
+            case ADD_LIQUIDITY_ETH:
+            case REMOVE_LIQUIDITY_ETH:
+                handle_add_remove_liquidity_eth(msg, context);
+                break;
+
             default:
                 PRINTF("Selector Index %d not supported\n", context->selectorIndex);
                 msg->result = ETH_PLUGIN_RESULT_ERROR;

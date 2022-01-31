@@ -167,6 +167,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
             break;
 
         case REMOVE_LIQUIDITY:
+        case REMOVE_LIQUIDITY_ETH:
             set_amount_a_min_remove(msg, context);
             break;
 
@@ -200,9 +201,10 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
             break;
 
         case REMOVE_LIQUIDITY:
-            set_amount_b_min_remove(msg,context);
+        case REMOVE_LIQUIDITY_ETH:
+            set_amount_b_min_remove(msg, context);
             break;
-            
+
         default:
             PRINTF("Unhandled selector Index: %d\n", context->selectorIndex);
             msg->result = ETH_PLUGIN_RESULT_ERROR;
