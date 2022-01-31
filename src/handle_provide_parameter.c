@@ -298,6 +298,7 @@ void handle_provide_parameter(void *parameters) {
             case ADD_LIQUIDITY_ETH:
             case REMOVE_LIQUIDITY_ETH:
             case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
+            case REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER:
                 handle_add_remove_liquidity_eth(msg, context);
                 break;
 

@@ -170,7 +170,7 @@ static void set_send_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *conte
         case REMOVE_LIQUIDITY_ETH:
         case REMOVE_LIQUIDITY_WITH_PERMIT:
         case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
-
+        case REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER:
             set_amount_a_min_remove(msg, context);
             break;
 
@@ -207,6 +207,7 @@ static void set_receive_ui(ethQueryContractUI_t *msg, quickswap_parameters_t *co
         case REMOVE_LIQUIDITY_ETH:
         case REMOVE_LIQUIDITY_WITH_PERMIT:
         case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
+        case REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER:
             set_amount_b_min_remove(msg, context);
             break;
 

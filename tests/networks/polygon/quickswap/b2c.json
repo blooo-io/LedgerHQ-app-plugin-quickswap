@@ -121,6 +121,13 @@
                     ],
                     "method": "removeLiquidityETHWithPermit",
                     "plugin": "QuickSwap"
+                },
+                "0xaf2979eb": {
+                    "erc20OfInterest": [
+                        "token"
+                    ],
+                    "method": "removeLiquidityETHSupportingFeeOnTransferTokens",
+                    "plugin": "QuickSwap"
                 }
             }
         }

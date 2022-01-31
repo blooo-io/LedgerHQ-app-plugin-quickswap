@@ -28,6 +28,7 @@ void handle_query_contract_id(void *parameters) {
         case REMOVE_LIQUIDITY_ETH:
         case REMOVE_LIQUIDITY_WITH_PERMIT:
         case REMOVE_LIQUIDITY_ETH_WITH_PERMIT:
+        case REMOVE_LIQUIDITY_ETH_SUPPORTING_FEE_ON_TRANSFER:
             strlcpy(msg->version, "Remove Liquidity", msg->versionLength);
             break;
 
