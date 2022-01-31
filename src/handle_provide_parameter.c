@@ -129,6 +129,10 @@ static void handle_swap_tokens_for_exact_tokens(ethPluginProvideParameter_t *msg
             break;
         case TOKEN_RECEIVED:  // path[len(path) - 1]
             handle_token_received(msg, context);
+            context->next_param = BENEFICIARY;
+            break;
+        case BENEFICIARY:  // to
+            handle_beneficiary(msg, context);
             context->next_param = NONE;
             break;
         case NONE:
@@ -174,6 +178,10 @@ static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg,
             break;
         case TOKEN_RECEIVED:  // path[len(path) - 1]
             handle_token_received(msg, context);
+            context->next_param = BENEFICIARY;
+            break;
+        case BENEFICIARY:  // to
+            handle_beneficiary(msg, context);
             context->next_param = NONE;
             break;
         case NONE:
