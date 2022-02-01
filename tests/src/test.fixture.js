@@ -5,12 +5,12 @@ import { parseEther, parseUnits, RLP } from "ethers/lib/utils";
 import { ethers } from "ethers";
 
 
-const transactionUploadDelay = 60000;
+const transactionUploadDelay = 10000;
 
 const sim_options_generic = {
   logging: true,
   X11: true,
-  startDelay: 5000,
+  startDelay: 15000,
   custom: "",
 };
 
@@ -25,7 +25,7 @@ const NANOX_PLUGIN_PATH = Resolve("elfs/quickswap_nanox.elf");
 const NANOS_PLUGIN = { QuickSwap: NANOS_PLUGIN_PATH };
 const NANOX_PLUGIN = { QuickSwap: NANOX_PLUGIN_PATH };
 
-const quickswapJSON = generate_plugin_config();
+
 
 const SPECULOS_ADDRESS = "0xFE984369CE3919AA7BB4F431082D027B4F8ED70C";
 const RANDOM_ADDRESS = "0xaaaabbbbccccddddeeeeffffgggghhhhiiiijjjj";
@@ -35,7 +35,7 @@ let genericTx = {
   gasLimit: Number(21000),
   gasPrice: parseUnits("1", "gwei"),
   value: parseEther("1"),
-  chainId: 1,
+  chainId: 137,
   to: RANDOM_ADDRESS,
   data: null,
 };
@@ -82,7 +82,7 @@ function txFromEtherscan(rawTx) {
  * @param {boolean} signed the plugin is already signed 
  * @returns {Promise}
  */
-function zemu(device, func, signed = false) {
+function zemu(device, func, signed = false, testNetwork) {
   return async () => {
     jest.setTimeout(TIMEOUT);
     let eth_path;
@@ -109,7 +109,7 @@ function zemu(device, func, signed = false) {
       if (!signed) {
         eth.setPluginsLoadConfig({
           baseURL: null,
-          extraPlugins: quickswapJSON,
+          extraPlugins: generate_plugin_config(testNetwork),
         });
       }
       await func(sim, eth);
@@ -128,22 +128,19 @@ function zemu(device, func, signed = false) {
  * @param {string} rawTxHex RawTransaction Hex to process
  */
 async function processTransaction(eth, sim, steps, label, rawTxHex, srlTx = "") {
-
   let serializedTx;
-
   if (srlTx == "")
     serializedTx = txFromEtherscan(rawTxHex);
   else
     serializedTx = srlTx;
-
   let tx = eth.signTransaction("44'/60'/0'/0/0", serializedTx);
 
   await sim.waitUntilScreenIsNot(
     sim.getMainMenuSnapshot(),
     transactionUploadDelay
   );
+  
   await sim.navigateAndCompareSnapshots(".", label, [steps, 0]);
-
   await tx;
 }
 
@@ -168,7 +165,7 @@ function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, s
         rawTxHex,
         serializedTx
       );
-    }, signed)
+    }, signed, testNetwork)
   );
 }
 

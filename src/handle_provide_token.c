@@ -15,8 +15,8 @@ void handle_provide_token(void *parameters) {
     } else {
         // CAL did not find the token and token is not ETH.
         context->decimals_sent = DEFAULT_DECIMAL;
-        strlcpy(context->ticker_sent, "???", sizeof(context->ticker_sent));
         // We will need an additional screen to display a warning message.
+        msg->additionalScreens++;
     }
 
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_received)) {
@@ -31,9 +31,8 @@ void handle_provide_token(void *parameters) {
     } else {
         // CAL did not find the token and token is not ETH.
         context->decimals_received = DEFAULT_DECIMAL;
-        strlcpy(context->ticker_received, "???", sizeof(context->ticker_received));
         // We will need an additional screen to display a warning message.
+        msg->additionalScreens++;
     }
-
     msg->result = ETH_PLUGIN_RESULT_OK;
 }
