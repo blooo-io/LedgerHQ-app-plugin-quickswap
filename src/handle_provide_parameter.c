@@ -61,21 +61,34 @@ static void handle_token_sent_eth(quickswap_parameters_t *context) {
     PRINTF("TOKEN SENT: %.*H\n", ADDRESS_LENGTH, context->contract_address_sent);
 }
 
+// Copy amount sent parameter to amount_sent
+static void handle_value_sent(const ethPluginProvideParameter_t *msg,
+                              quickswap_parameters_t *context) {
+    ethPluginSharedRO_t *pluginSharedRO = (ethPluginSharedRO_t *) msg->pluginSharedRO;
+
+    copy_parameter(context->amount_sent,
+                   pluginSharedRO->txContent->value.length,
+                   pluginSharedRO->txContent->value.value);
+}
+
 static void handle_swap_exact_tokens(ethPluginProvideParameter_t *msg,
                                      quickswap_parameters_t *context) {
     switch (context->next_param) {
         case AMOUNT_SENT:  // amountIn
             handle_amount_sent(msg, context);
             context->next_param = AMOUNT_RECEIVED;
-            context->checkpoint = msg->parameterOffset;
             break;
         case AMOUNT_RECEIVED:  // amountOut
             handle_amount_received(msg, context);
             context->next_param = PATHS_OFFSET;
             break;
         case PATHS_OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - 2);
+            context->next_param = BENEFICIARY;
+            break;
+        case BENEFICIARY:  // to
+            handle_beneficiary(msg, context);
             context->next_param = PATH;
+            context->skip++;
             break;
         case PATH:  // len(path)
             handle_array_len(msg, context);
@@ -87,14 +100,12 @@ static void handle_swap_exact_tokens(ethPluginProvideParameter_t *msg,
             break;
         case TOKEN_RECEIVED:  // path[len(path) - 1]
             handle_token_received(msg, context);
-            context->next_param = BENEFICIARY;
-            break;
-        case BENEFICIARY:  // to
-            handle_beneficiary(msg, context);
             context->next_param = NONE;
             break;
+
         case NONE:
             break;
+
         default:
             PRINTF("Unsupported param\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
@@ -107,36 +118,50 @@ static void handle_swap_tokens_for_exact_tokens(ethPluginProvideParameter_t *msg
     switch (context->next_param) {
         case AMOUNT_RECEIVED:  // amountOut
             handle_amount_received(msg, context);
-            context->next_param = AMOUNT_SENT;
-            context->checkpoint = msg->parameterOffset;
+
+            if (context->selectorIndex == SWAP_EXACT_ETH_FOR_TOKENS ||
+                context->selectorIndex == SWAP_ETH_FOR_EXACT_TOKENS ||
+                context->selectorIndex ==
+                    SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS) {
+                handle_value_sent(msg, context);
+                context->next_param = PATHS_OFFSET;
+            } else {
+                context->next_param = AMOUNT_SENT;
+            }
             break;
+
         case AMOUNT_SENT:  // amountIn
             handle_amount_sent(msg, context);
             context->next_param = PATHS_OFFSET;
             break;
+
         case PATHS_OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
+            context->next_param = BENEFICIARY;
+            break;
+
+        case BENEFICIARY:  // to
+            handle_beneficiary(msg, context);
             context->next_param = PATH;
+            context->skip++;
             break;
+
         case PATH:  // len(path)
-            context->skip = msg->parameter[PARAMETER_LENGTH - 1] - 2;
             context->next_param = TOKEN_SENT;
-            context->checkpoint = msg->parameterOffset + PARAMETER_LENGTH;
             break;
+
         case TOKEN_SENT:  // path[0]
             handle_token_sent(msg, context);
             context->next_param = TOKEN_RECEIVED;
             break;
+
         case TOKEN_RECEIVED:  // path[len(path) - 1]
             handle_token_received(msg, context);
-            context->next_param = BENEFICIARY;
-            break;
-        case BENEFICIARY:  // to
-            handle_beneficiary(msg, context);
             context->next_param = NONE;
             break;
+
         case NONE:
             break;
+
         default:
             PRINTF("Unsupported param\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
@@ -144,48 +169,44 @@ static void handle_swap_tokens_for_exact_tokens(ethPluginProvideParameter_t *msg
     }
 }
 
-// Copy amount sent parameter to amount_sent
-static void handle_value_sent(const ethPluginProvideParameter_t *msg,
-                              quickswap_parameters_t *context) {
-    ethPluginSharedRO_t *pluginSharedRO = (ethPluginSharedRO_t *) msg->pluginSharedRO;
-
-    copy_parameter(context->amount_sent,
-                   pluginSharedRO->txContent->value.length,
-                   pluginSharedRO->txContent->value.value);
-}
-
 static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg,
                                              quickswap_parameters_t *context) {
     switch (context->next_param) {
         case AMOUNT_RECEIVED:  // amountOut
-            context->checkpoint = msg->parameterOffset;
-            handle_value_sent(msg, context);
             handle_amount_received(msg, context);
+
+            handle_value_sent(msg, context);
+
             context->next_param = PATHS_OFFSET;
             break;
+
         case PATHS_OFFSET:
-            context->offset = U2BE(msg->parameter, PARAMETER_LENGTH - sizeof(context->offset));
+            context->next_param = BENEFICIARY;
+            break;
+
+        case BENEFICIARY:
+            handle_beneficiary(msg, context);
             context->next_param = PATH;
+            context->skip++;  // we skip deadline
             break;
+
         case PATH:  // len(path)
-            context->skip = msg->parameter[PARAMETER_LENGTH - 1] - 2;
             context->next_param = TOKEN_SENT;
-            context->checkpoint = msg->parameterOffset + PARAMETER_LENGTH;
             break;
+
         case TOKEN_SENT:  // path[0]
             handle_token_sent(msg, context);
             context->next_param = TOKEN_RECEIVED;
             break;
+
         case TOKEN_RECEIVED:  // path[len(path) - 1]
             handle_token_received(msg, context);
-            context->next_param = BENEFICIARY;
-            break;
-        case BENEFICIARY:  // to
-            handle_beneficiary(msg, context);
             context->next_param = NONE;
             break;
+
         case NONE:
             break;
+
         default:
             PRINTF("Param not supported\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
@@ -286,15 +307,13 @@ void handle_provide_parameter(void *parameters) {
             case SWAP_EXACT_TOKENS_FOR_ETH_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
                 handle_swap_exact_tokens(msg, context);
                 break;
-            case SWAP_TOKENS_FOR_EXACT_TOKENS:
-            case SWAP_TOKENS_FOR_EXACT_ETH:
-                handle_swap_tokens_for_exact_tokens(msg, context);
-                break;
 
             case SWAP_EXACT_ETH_FOR_TOKENS:
             case SWAP_ETH_FOR_EXACT_TOKENS:
             case SWAP_EXACT_ETH_FOR_TOKENS_SUPPORTING_FEE_ON_TRANSFER_TOKENS:
-                handle_swap_exact_eth_for_tokens(msg, context);
+            case SWAP_TOKENS_FOR_EXACT_TOKENS:
+            case SWAP_TOKENS_FOR_EXACT_ETH:
+                handle_swap_tokens_for_exact_tokens(msg, context);
                 break;
 
             case ADD_LIQUIDITY:
