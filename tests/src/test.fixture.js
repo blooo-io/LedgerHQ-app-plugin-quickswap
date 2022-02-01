@@ -170,7 +170,7 @@ function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, s
 }
 
 
-function populateTransaction(contractAddr, inputData, chainId, value = "0.1") {
+function populateTransaction(contractAddr, inputData, chainId, value = "0.0") {
   // Get the generic transaction template
   let unsignedTx = genericTx;
   //adapt to the appropriate network

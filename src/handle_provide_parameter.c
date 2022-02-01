@@ -1,23 +1,15 @@
 #include "quickswap_plugin.h"
 
-// Copies the whole parameter (32 bytes long) from `src` to `dst`.
-// Useful for numbers, data...
-static void copy_parameter(uint8_t *dst, size_t dst_len, uint8_t *src) {
-    // Take the minimum between dst_len and parameter_length to make sure we don't overwrite memory.
-    size_t len = MIN(dst_len, PARAMETER_LENGTH);
-    memcpy(dst, src, len);
-}
-
 // Copy amount sent parameter to amount_sent
 static void handle_amount_sent(const ethPluginProvideParameter_t *msg,
                                quickswap_parameters_t *context) {
-    copy_parameter(context->amount_sent, sizeof(context->amount_sent), msg->parameter);
+    copy_parameter(context->amount_sent, msg->parameter, sizeof(context->amount_sent));
 }
 
 // Copy amount sent parameter to amount_received
 static void handle_amount_received(const ethPluginProvideParameter_t *msg,
                                    quickswap_parameters_t *context) {
-    copy_parameter(context->amount_received, sizeof(context->amount_received), msg->parameter);
+    copy_parameter(context->amount_received, msg->parameter, sizeof(context->amount_received));
 }
 
 static void handle_beneficiary(const ethPluginProvideParameter_t *msg,
@@ -67,8 +59,8 @@ static void handle_value_sent(const ethPluginProvideParameter_t *msg,
     ethPluginSharedRO_t *pluginSharedRO = (ethPluginSharedRO_t *) msg->pluginSharedRO;
 
     copy_parameter(context->amount_sent,
-                   pluginSharedRO->txContent->value.length,
-                   pluginSharedRO->txContent->value.value);
+                   pluginSharedRO->txContent->value.value,
+                   pluginSharedRO->txContent->value.length);
 }
 
 static void handle_swap_exact_tokens(ethPluginProvideParameter_t *msg,
@@ -164,51 +156,6 @@ static void handle_swap_tokens_for_exact_tokens(ethPluginProvideParameter_t *msg
 
         default:
             PRINTF("Unsupported param\n");
-            msg->result = ETH_PLUGIN_RESULT_ERROR;
-            break;
-    }
-}
-
-static void handle_swap_exact_eth_for_tokens(ethPluginProvideParameter_t *msg,
-                                             quickswap_parameters_t *context) {
-    switch (context->next_param) {
-        case AMOUNT_RECEIVED:  // amountOut
-            handle_amount_received(msg, context);
-
-            handle_value_sent(msg, context);
-
-            context->next_param = PATHS_OFFSET;
-            break;
-
-        case PATHS_OFFSET:
-            context->next_param = BENEFICIARY;
-            break;
-
-        case BENEFICIARY:
-            handle_beneficiary(msg, context);
-            context->next_param = PATH;
-            context->skip++;  // we skip deadline
-            break;
-
-        case PATH:  // len(path)
-            context->next_param = TOKEN_SENT;
-            break;
-
-        case TOKEN_SENT:  // path[0]
-            handle_token_sent(msg, context);
-            context->next_param = TOKEN_RECEIVED;
-            break;
-
-        case TOKEN_RECEIVED:  // path[len(path) - 1]
-            handle_token_received(msg, context);
-            context->next_param = NONE;
-            break;
-
-        case NONE:
-            break;
-
-        default:
-            PRINTF("Param not supported\n");
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             break;
     }
