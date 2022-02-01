@@ -3,7 +3,10 @@
 void handle_provide_token(void *parameters) {
     ethPluginProvideInfo_t *msg = (ethPluginProvideInfo_t *) parameters;
     quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
-    PRINTF("QUICKSWAP plugin provide token: 0x%p, 0x%p\n", msg->item1->token, msg->item2->token);
+
+    PRINTF("QUICKSWAP plugin provide token: 0x%p, 0x%p\n",
+           msg->item1->token.address,
+           msg->item2->token.address);
 
     if (ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {
         context->decimals_sent = WEI_TO_ETHER;
