@@ -25,9 +25,9 @@ const devices = [
         steps: 9, // <= Define the number of steps for this test case and this device
     },
     {
-      name: "nanox",
-      label: "Nano X",
-      steps: 7, // <= Define the number of steps for this test case and this device
+        name: "nanox",
+        label: "Nano X",
+        steps: 7, // <= Define the number of steps for this test case and this device
     },
 ];
 

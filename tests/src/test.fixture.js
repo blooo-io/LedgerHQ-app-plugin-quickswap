@@ -9,7 +9,6 @@ const transactionUploadDelay = 10000;
 
 const sim_options_generic = {
   logging: true,
-  X11: false,
   startDelay: 15000,
   startText: 'is ready'
 };
