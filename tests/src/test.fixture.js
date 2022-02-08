@@ -9,9 +9,8 @@ const transactionUploadDelay = 10000;
 
 const sim_options_generic = {
   logging: true,
-  X11: true,
   startDelay: 15000,
-  custom: "",
+  startText: 'is ready'
 };
 
 const Resolve = require("path").resolve;
@@ -139,7 +138,7 @@ async function processTransaction(eth, sim, steps, label, rawTxHex, srlTx = "") 
     sim.getMainMenuSnapshot(),
     transactionUploadDelay
   );
-  
+
   await sim.navigateAndCompareSnapshots(".", label, [steps, 0]);
   await tx;
 }
