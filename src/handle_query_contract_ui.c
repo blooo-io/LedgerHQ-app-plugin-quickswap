@@ -228,7 +228,7 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, quickswap_parameters_t
     msg->msg[1] = 'x';
 
     getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
-                                  (char *) msg->msg + 2,
+                                  msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
                                   0);
 }

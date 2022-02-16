@@ -56,7 +56,7 @@ static void handle_token_sent_eth(quickswap_parameters_t *context) {
 // Copy amount sent parameter to amount_sent
 static void handle_value_sent(const ethPluginProvideParameter_t *msg,
                               quickswap_parameters_t *context) {
-    ethPluginSharedRO_t *pluginSharedRO = (ethPluginSharedRO_t *) msg->pluginSharedRO;
+    ethPluginSharedRO_t *pluginSharedRO = msg->pluginSharedRO;
 
     copy_parameter(context->amount_sent,
                    pluginSharedRO->txContent->value.value,
