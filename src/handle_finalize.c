@@ -4,10 +4,10 @@ void handle_finalize(void *parameters) {
     ethPluginFinalize_t *msg = (ethPluginFinalize_t *) parameters;
     quickswap_parameters_t *context = (quickswap_parameters_t *) msg->pluginContext;
 
-    if (context->valid) {
+    if (context->valid && context->next_param == NONE) {
         msg->numScreens = 2;
-        if ((strncmp(context->beneficiary, (const char *) NULL_ETH_ADDRESS, ADDRESS_LENGTH) != 0)) {
-            // An addiitonal screen is required to display the `beneficiary` field.
+        if (memcmp(context->beneficiary, NULL_ETH_ADDRESS, ADDRESS_LENGTH) != 0) {
+            // An additional screen is required to display the `beneficiary` field.
             msg->numScreens += 1;
         }
         if (!ADDRESS_IS_NETWORK_TOKEN(context->contract_address_sent)) {

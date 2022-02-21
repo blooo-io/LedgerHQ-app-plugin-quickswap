@@ -1,4 +1,4 @@
-import expect from 'expect'
+import expect from 'expect';
 
 expect.extend({
     toMatchSnapshot(received, original) {
@@ -7,13 +7,13 @@ expect.extend({
         return {
           message: () => `snapshots are equal`,
           pass: true
-        }
+        };
       } else {
-        console.log("snapshots are not equal")
+        console.log("snapshots are not equal");
         return {
           message: () => `snapshots are not equal`,
           pass: false
-        }
+        };
       }
     },
   });

@@ -26,7 +26,6 @@ const NANOX_PLUGIN = { QuickSwap: NANOX_PLUGIN_PATH };
 
 
 
-const SPECULOS_ADDRESS = "0xFE984369CE3919AA7BB4F431082D027B4F8ED70C";
 const RANDOM_ADDRESS = "0xaaaabbbbccccddddeeeeffffgggghhhhiiiijjjj";
 
 let genericTx = {
@@ -39,7 +38,7 @@ let genericTx = {
   data: null,
 };
 
-const TIMEOUT = 1000000;
+const TIMEOUT = 2000000;
 
 /**
  * Generates a serializedTransaction from a rawHexTransaction copy pasted from etherscan.
@@ -81,7 +80,7 @@ function txFromEtherscan(rawTx) {
  * @param {boolean} signed the plugin is already signed 
  * @returns {Promise}
  */
-function zemu(device, func, signed = false, testNetwork) {
+function zemu(device, func, testNetwork, signed = false) {
   return async () => {
     jest.setTimeout(TIMEOUT);
     let eth_path;
@@ -164,7 +163,7 @@ function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, s
         rawTxHex,
         serializedTx
       );
-    }, signed, testNetwork)
+    }, testNetwork, signed)
   );
 }
 

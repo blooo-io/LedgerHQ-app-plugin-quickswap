@@ -228,7 +228,7 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, quickswap_parameters_t
     msg->msg[1] = 'x';
 
     getEthAddressStringFromBinary((uint8_t *) context->beneficiary,
-                                  (char *) msg->msg + 2,
+                                  msg->msg + 2,
                                   msg->pluginSharedRW->sha3,
                                   0);
 }
@@ -282,7 +282,6 @@ static screens_t get_screen(const ethQueryContractUI_t *msg,
             } else {
                 return RECEIVE_SCREEN;
             }
-            break;
         case 3:
             if (both_tokens_found) {
                 return ERROR;
@@ -291,17 +290,14 @@ static screens_t get_screen(const ethQueryContractUI_t *msg,
             } else {
                 return BENEFICIARY_SCREEN;
             }
-            break;
         case 4:
             if (both_tokens_not_found) {
                 return BENEFICIARY_SCREEN;
             } else {
                 return ERROR;
             }
-            break;
         default:
             return ERROR;
-            break;
     }
     return ERROR;
 }
